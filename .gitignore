@@ -1,12 +1,5 @@
-# Ignore IDEA configuration directory
-.idea
-
-# Ignore VS Code configuration directory
-.vscode
-
 # Ignore Gradle project-specific cache directory
 .gradle
 
 # Ignore Gradle build output directory
 build
-bin

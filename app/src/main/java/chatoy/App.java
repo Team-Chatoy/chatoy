@@ -3,24 +3,12 @@
  */
 package chatoy;
 
-import java.awt.Dimension;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 public class App {
-  public String getGreeting() {
-    return "Hello, Chatoy!";
-  }
+    public String getGreeting() {
+        return "Hello World!";
+    }
 
-  private static JPanel rootPanel = new JPanel();
-
-  public static void main(String[] args) {
-    JFrame frame = new JFrame("Chatoy");
-    frame.getContentPane().add(rootPanel);
-    rootPanel.setPreferredSize(new Dimension(680, 600));
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.pack();
-    frame.setVisible(true);
-  }
+    public static void main(String[] args) {
+        System.out.println(new App().getGreeting());
+    }
 }
