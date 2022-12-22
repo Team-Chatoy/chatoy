@@ -3,6 +3,8 @@ package src.main.java.chatoy;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+
+//登录界面基本雏形
 public class Register extends JFrame implements ActionListener{
 
     JLabel jbl1;
