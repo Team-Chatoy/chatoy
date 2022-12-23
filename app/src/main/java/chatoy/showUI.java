@@ -15,11 +15,11 @@ public class showUI {
   public void UI() {
     // 创建窗体
     JFrame jf = new JFrame();
-    jf.setSize(400, 300);              //窗体大小
-    jf.setDefaultCloseOperation(3);    //可以退出
+    jf.setSize(400, 300);              // 窗体大小
+    jf.setDefaultCloseOperation(3);    // 可以退出
     jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    jf.setLocationRelativeTo(null);    //相对屏幕居中
-    jf.setTitle("Chatoy 登录界面");      //窗体名字
+    jf.setLocationRelativeTo(null);    // 相对屏幕居中
+    jf.setTitle("Chatoy 登录界面");     // 窗体名字
 
     jf.setLayout(null);
     // 图像——创建 JLabel 对象，使用 ImageIcon 作为输入初始化 JLabel
