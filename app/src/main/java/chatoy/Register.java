@@ -23,8 +23,9 @@ public class Register extends JFrame implements ActionListener{
         frame.setVisible(true);
     }
 
-    public Register(){
+    public Register(String str){
 
+        super(str);
         jbl1 = new JLabel(new ImageIcon());
         jp1 = new JPanel();
         jp1_jb1 = new JButton("登录");
