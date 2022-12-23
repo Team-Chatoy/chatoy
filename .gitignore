@@ -1,3 +1,6 @@
+# Ignore IDEA configuration directory
+.idea
+
 # Ignore VS Code configuration directory
 .vscode
 
