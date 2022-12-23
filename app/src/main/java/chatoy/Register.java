@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-// 登录界面基本雏形
 public class Register extends JFrame implements ActionListener {
   JLabel jbl1;
   JTabbedPane jtp;
@@ -17,7 +16,15 @@ public class Register extends JFrame implements ActionListener {
   JButton jp1_jb1;
   JButton jp1_jb2;
 
-  public Register() {
+  public static void main(String[] args) {
+    Register frame = new Register("Chatoy 登陆界面");
+    frame.setSize(400, 150);
+    frame.setVisible(true);
+  }
+
+  public Register(String str) {
+    super(str);
+
     jbl1 = new JLabel(new ImageIcon());
     jp1 = new JPanel();
     jp1_jb1 = new JButton("登录");
