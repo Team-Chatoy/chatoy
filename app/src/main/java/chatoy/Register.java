@@ -37,7 +37,7 @@ public class Register extends JFrame {
       ee.printStackTrace();
     }
 
-    Register frame = new Register();
+    new Register();
   }
 
   public Register() {
@@ -126,7 +126,7 @@ public class Register extends JFrame {
     @Override
     public void actionPerformed(ActionEvent e) {
       if (e.getSource() == jbt2) {
-        chatoy.Login login = new chatoy.Login();
+        new chatoy.Login();
       }
     }
   }
