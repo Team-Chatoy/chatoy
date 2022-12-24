@@ -1,6 +1,6 @@
 package chatoy;
 
-import java.awt.Dimension;
+import java.awt.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -11,8 +11,25 @@ import javax.swing.JTextField;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class showUI {
+public class ShowUI {
   public void UI() {
+    try {
+      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+        if ("Nimbus".equals(info.getName())) {
+          javax.swing.UIManager.setLookAndFeel(info.getClassName());
+          break;
+        }
+      }
+    } catch (ClassNotFoundException ex) {
+      ex.printStackTrace();
+    } catch (InstantiationException ex) {
+      ex.printStackTrace();
+    } catch (IllegalAccessException ex) {
+      ex.printStackTrace();
+    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+      ex.printStackTrace();
+    }
+
     // 创建窗体
     JFrame jf = new JFrame();
     jf.setSize(400, 300);              // 窗体大小
@@ -23,10 +40,11 @@ public class showUI {
 
     jf.setLayout(null);
     // 图像——创建 JLabel 对象，使用 ImageIcon 作为输入初始化 JLabel
-    ImageIcon icon = new ImageIcon("I://wqw.png");
-    JLabel jla = new JLabel(icon);
-    jf.add(jla);
     // 文本输入——文字 JLabel、账号 JTextField、密码 JPasswordField
+
+    Picture picture = new Picture();
+    jf.add(picture);
+    picture.setPreferredSize(new Dimension(400,300));
 
     // 除了 JFrame 设置大小为 setSize(int x, int y)，其他组件都用 setPreferredSize(Dimension d)
     JLabel jl1 = new JLabel("账号：");
@@ -52,8 +70,27 @@ public class showUI {
     // 复选框——JCheckBox
     JCheckBox jcb = new JCheckBox("记住密码");
     jf.add(jcb);
-    jcb.setBounds(270, 90, 200, 40);
+    jcb.setBounds(290, 90, 100, 40);
 
+    JCheckBox jcb1 = new JCheckBox("自动登录");
+    jf.add(jcb1);
+    jcb1.setBounds(210, 90, 100, 40);
+
+    jcb.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        JOptionPane.showMessageDialog(jf,"您确定要记住密码吗？");
+      }
+    });
+
+    jcb1.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        JOptionPane.showMessageDialog(jf,"下次登录将自动登录！");
+      }
+    });
     // 按钮——JButton
     JButton jb1 = new JButton("注册");
     jf.add(jb1);
@@ -77,7 +114,7 @@ public class showUI {
   }
 
   // 判断账号密码是否正确——正确显示“登陆成功”，不正确显示“登录失败”
-  public class ButtonListener implements ActionListener {
+  public static class ButtonListener implements ActionListener {
     private JTextField jtf1;
     private JTextField jtf2;
 
@@ -113,10 +150,15 @@ public class showUI {
       jtf1.setText("");
       jtf2.setText("");
     }
+
+
+
+
   }
 
+
   public static void main(String args[]) {
-    showUI tf = new showUI();
+    ShowUI tf = new ShowUI();
     tf.UI();
   }
 }
