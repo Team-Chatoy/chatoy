@@ -31,20 +31,24 @@ public class ShowUI {
     }
 
     // 创建窗体
-    JFrame jf = new JFrame();
-    jf.setSize(400, 300);              // 窗体大小
-    jf.setDefaultCloseOperation(3);    // 可以退出
-    jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    jf.setLocationRelativeTo(null);    // 相对屏幕居中
-    jf.setTitle("Chatoy 登录界面");     // 窗体名字
+    JFrame frame = new JFrame();
+    frame.setSize(400, 300);              // 窗体大小
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setLocationRelativeTo(null);    // 相对屏幕居中
+    frame.setTitle("Chatoy 登录界面");     // 窗体名字
 
-    jf.setLayout(null);
+    frame.setLayout(null);
     // 图像——创建 JLabel 对象，使用 ImageIcon 作为输入初始化 JLabel
     // 文本输入——文字 JLabel、账号 JTextField、密码 JPasswordField
 
-    Picture picture = new Picture();
-    jf.add(picture);
-    picture.setPreferredSize(new Dimension(400,300));
+
+    ((JPanel)frame.getContentPane()).setOpaque(false);
+    ImageIcon img = new ImageIcon("app/image/1.png"); //添加图片
+    JLabel background = new  JLabel(img);
+    background.setPreferredSize(new Dimension(400,300));
+    background.setBounds(0,0,400,300);
+    frame.getLayeredPane().add(background, new Integer(Integer.MIN_VALUE));
+    background.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
 
     // 除了 JFrame 设置大小为 setSize(int x, int y)，其他组件都用 setPreferredSize(Dimension d)
     JLabel jl1 = new JLabel("账号：");
@@ -61,47 +65,41 @@ public class ShowUI {
     jt2.setPreferredSize(new Dimension(300, 30));
     jt2.setBounds(60, 50, 310, 30);
 
-    jf.add(jl1);
-    jf.add(jt1);
-    jf.add(jl2);
-    jf.add(jt2);
+    frame.add(jl1);
+    frame.add(jt1);
+    frame.add(jl2);
+    frame.add(jt2);
 
     // JTextField jt3 = new JTextField(4); // 设置输入框大小另一种方式——4 个输入字符
     // 复选框——JCheckBox
     JCheckBox jcb = new JCheckBox("记住密码");
-    jf.add(jcb);
+    frame.add(jcb);
     jcb.setBounds(290, 90, 100, 40);
 
     JCheckBox jcb1 = new JCheckBox("自动登录");
-    jf.add(jcb1);
+    frame.add(jcb1);
     jcb1.setBounds(210, 90, 100, 40);
 
-    jcb.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Object source = e.getSource();
-        JOptionPane.showMessageDialog(jf,"您确定要记住密码吗？");
-      }
+    jcb.addActionListener(e -> {
+      Object source = e.getSource();
+      JOptionPane.showMessageDialog(frame,"您确定要记住密码吗？");
     });
 
-    jcb1.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Object source = e.getSource();
-        JOptionPane.showMessageDialog(jf,"下次登录将自动登录！");
-      }
+    jcb1.addActionListener(e -> {
+      Object source = e.getSource();
+      JOptionPane.showMessageDialog(frame,"下次登录将自动登录！");
     });
     // 按钮——JButton
     JButton jb1 = new JButton("注册");
-    jf.add(jb1);
+    frame.add(jb1);
     jb1.setBounds(70, 150, 90, 40);
 
     JButton jb = new JButton("登录");
-    jf.add(jb);
+    frame.add(jb);
     jb.setBounds(220, 150, 90, 40);
 
     // 窗体可见，写在 add 组件之后
-    jf.setVisible(true);
+    frame.setVisible(true);
     // (a) 构造方法初始化文本框的对象
     ButtonListener bl = new ButtonListener(jt1, jt2);
 
@@ -157,7 +155,7 @@ public class ShowUI {
   }
 
 
-  public static void main(String args[]) {
+  public static void main(String[] args) {
     ShowUI tf = new ShowUI();
     tf.UI();
   }
