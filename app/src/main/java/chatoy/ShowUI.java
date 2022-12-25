@@ -90,7 +90,7 @@ public class ShowUI {
     @Override
     public void actionPerformed(ActionEvent e) {
       if(e.getSource() == registButton) {
-        Login login = new Login();
+        Register onregister = new Register();
       }
 
     }
