@@ -81,22 +81,25 @@ public class ShowUI {
     jcb1.setBounds(210, 90, 100, 40);
 
     jcb.addActionListener(e -> {
-      Object source = e.getSource();
       JOptionPane.showMessageDialog(frame,"您确定要记住密码吗？");
     });
 
-    jcb1.addActionListener(e -> {
-      Object source = e.getSource();
-      JOptionPane.showMessageDialog(frame,"下次登录将自动登录！");
-    });
+    jcb1.addActionListener(e -> JOptionPane.showMessageDialog(frame,"下次登录将自动登录！"));
     // 按钮——JButton
-    JButton jb1 = new JButton("注册");
-    frame.add(jb1);
-    jb1.setBounds(70, 150, 90, 40);
+    JButton zhuceButton = new JButton("注册");
+    frame.add(zhuceButton);
+    zhuceButton.setBounds(70, 150, 90, 40);
 
-    JButton jb = new JButton("登录");
-    frame.add(jb);
-    jb.setBounds(220, 150, 90, 40);
+    JButton dengluButton = new JButton("登录");
+    frame.add(dengluButton);
+    dengluButton.setBounds(220, 150, 90, 40);
+
+    dengluButton.addActionListener(e -> {
+        String zhanghao = jt1.getText();
+        if(zhanghao == null || zhanghao.trim().equals("")){
+          JOptionPane.showMessageDialog(null,"账号不能为空！");
+        }
+    });
 
     // 窗体可见，写在 add 组件之后
     frame.setVisible(true);
@@ -108,7 +111,11 @@ public class ShowUI {
     // bl.setText(jt1, jt2);
 
     // 4. 绑定
-    jb.addActionListener(bl);
+    dengluButton.addActionListener(bl);
+
+/*    ChatInterface chatInterface = new ChatInterface();
+    String tokenString = "abc";
+    chatInterface.run(tokenString);*/
   }
 
   // 判断账号密码是否正确——正确显示“登陆成功”，不正确显示“登录失败”
