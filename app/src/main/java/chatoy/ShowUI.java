@@ -49,7 +49,6 @@ public class ShowUI {
     // 图像——创建 JLabel 对象，使用 ImageIcon 作为输入初始化 JLabel
     // 文本输入——文字 JLabel、账号 JTextField、密码 JPasswordField
 
-
     ((JPanel)frame.getContentPane()).setOpaque(false);
     ImageIcon img = new ImageIcon("app/image/1.png"); //添加图片
     JLabel background = new  JLabel(img);
