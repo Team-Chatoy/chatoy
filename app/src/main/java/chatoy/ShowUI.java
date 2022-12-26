@@ -37,6 +37,14 @@ public class ShowUI {
     frame.setLocationRelativeTo(null);    // 相对屏幕居中
     frame.setTitle("Chatoy 登录界面");     // 窗体名字
 
+    int windowWidth = frame.getWidth();
+    int windowHeight = frame.getHeight();
+    Toolkit kit = Toolkit.getDefaultToolkit();
+    Dimension screenSize = kit.getScreenSize();
+    int screenWidth = screenSize.width;
+    int screenHeight = screenSize.height;
+    frame.setLocation(screenWidth/2-windowWidth/2, screenHeight/2-windowHeight/2);
+
     frame.setLayout(null);
     // 图像——创建 JLabel 对象，使用 ImageIcon 作为输入初始化 JLabel
     // 文本输入——文字 JLabel、账号 JTextField、密码 JPasswordField
