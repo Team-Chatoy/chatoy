@@ -163,7 +163,6 @@ public class ShowUI {
       jtf2.setText("");
     }
 
-
   }
 
 
