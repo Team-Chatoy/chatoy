@@ -59,8 +59,8 @@ public class ShowUI {
     // 按钮
     registButton = new JButton("注册");
     registButton.setBounds(70, 150, 90, 40);
-    SkipListener onregist = new SkipListener();
-    registButton.addActionListener(onregist);
+    SkipListener onRegist = new SkipListener();
+    registButton.addActionListener(onRegist);
     frame.add(registButton);
 
     JButton loginButton = new JButton("登录");
@@ -86,13 +86,12 @@ public class ShowUI {
   }
 
   //跳转注册界面
-  class SkipListener implements ActionListener{
+  class SkipListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-      if(e.getSource() == registButton) {
-        Register onregister = new Register();
+      if (e.getSource() == registButton) {
+        new Register();
       }
-
     }
   }
 
