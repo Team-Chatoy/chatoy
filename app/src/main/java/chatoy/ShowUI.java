@@ -1,5 +1,6 @@
 package chatoy;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -20,6 +21,17 @@ public class ShowUI {
       System.out.println("Error setting the LAF!");
       e.printStackTrace();
     }
+
+    int windowWidth = frame.getWidth();
+    int windowHeight = frame.getHeight();
+    Toolkit kit = Toolkit.getDefaultToolkit();
+    Dimension screenSize = kit.getScreenSize();
+    int screenWidth = screenSize.width;
+    int screenHeight = screenSize.height;
+    frame.setLocation(
+      screenWidth / 2 - windowWidth / 2,
+      screenHeight / 2 - windowHeight / 2
+    );
 
     // 除了 JFrame 设置大小为 setSize(int x, int y)
     // 其它组件都用 setPreferredSize(Dimension d)
@@ -104,6 +116,12 @@ public class ShowUI {
     // 当该事件发生，这个方法会被调用
     public void actionPerformed(ActionEvent e) {
       System.out.println("按钮被点击！");
+      if (checkEmpty("帐号", usernameField)) {
+        return;
+      }
+      if (checkEmpty("密码", passwordField)) {
+        return;
+      }
       validate(
         usernameField.getText(),
         passwordField.getText()
@@ -118,6 +136,15 @@ public class ShowUI {
     ) {
       this.usernameField = initUsernameField;
       this.passwordField = initPasswordField;
+    }
+
+    private boolean checkEmpty(String name, JTextField field) {
+      String value = field.getText();
+      if (value == null || value.trim().equals("")) {
+        JOptionPane.showMessageDialog(null, name + "不能为空！");
+        return true;
+      }
+      return false;
     }
 
     // 判断方法——判断登陆成功 or 失败，显示弹框信息后，初始化输入框文本为空 “”
