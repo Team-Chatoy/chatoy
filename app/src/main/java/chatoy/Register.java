@@ -1,133 +1,67 @@
 package chatoy;
 
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Container;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
+import javax.swing.*;
 
 public class Register extends JFrame {
-  private JPanel jpl1;
-  private JPanel jpl2;
-  private JPanel jpl3;
-  private JPanel jpl4;
-  private JLabel jlb1;
-  private JLabel jlb2;
-  private JLabel jlb3;
-  private JLabel jlb4;
-  private JTextField jtf;
-  private JPasswordField jpf;
-  private JCheckBox jcb;
-  private JTabbedPane jtp;
-  private JButton jbt1;
-  private JButton jbt2;
-
-  public static void main(String[] args) {
-    try {
-      UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-    } catch (Exception ee) {
-      ee.printStackTrace();
-    }
-
-    new Register();
-  }
+  private JLabel usernameLabel;
+  private JLabel tipNameLabel;
+  private JLabel passwdLabel;
+  private JLabel tipPasswdLabel;
+  private JTextField usernameField;
+  private JPasswordField passwordField;
+  private JButton registerButton;
+  private JCheckBox agreeService;
 
   public Register() {
-    Font font = new Font("Serif", Font.PLAIN, 15);
-    ListenerOne listener = new ListenerOne();
-    jpl1 = new JPanel();
-    jpl1.setLayout(null);
-    jbt1 = new JButton("登录");
-    jbt2 = new JButton("注册");
-    jpl1.add(jbt1);
-    jpl1.add(jbt2);
-    jbt1.setBounds(50, 380, 190, 50);
-    jbt2.setBounds(260, 380, 190, 50);
-    jbt2.addActionListener(listener);
+    Container container = this.getContentPane();
+    container.setLayout(null);
 
-    jpl2 = new JPanel();
-    jpl2.setLayout(null);
-    jlb1 = new JLabel("账号");
-    jlb2 = new JLabel("密码");
-    jtf = new JTextField();
-    jpf = new JPasswordField();
-    jcb = new JCheckBox("记住密码");
-    jcb.setFont(font);
-    jpl2.add(jlb1);
-    jpl2.add(jlb2);
-    jpl2.add(jtf);
-    jpl2.add(jpf);
-    jpl2.add(jcb);
-    jlb1.setBounds(50, 20, 300, 20);
-    jlb2.setBounds(50, 120, 300, 20);
-    jtf.setBounds(50, 60, 300, 30);
-    jpf.setBounds(50, 160, 300, 30);
-    jcb.setBounds(50, 230, 300, 30);
-    jtp = new JTabbedPane();
-    jtp.addTab("账号", jpl2);
+    // Labels
+    usernameLabel = new JLabel("昵称：");
+    usernameLabel.setBounds(50, 20, 300, 30);
+    container.add(usernameLabel);
 
-    jpl3 = new JPanel();
-    jpl3.setLayout(null);
-    jlb3 = new JLabel("电话号码");
-    jlb2 = new JLabel("密码");
-    jtf = new JTextField();
-    jpf = new JPasswordField();
-    jcb = new JCheckBox("记住密码");
-    jcb.setFont(font);
-    jpl3.add(jlb3);
-    jpl3.add(jlb2);
-    jpl3.add(jtf);
-    jpl3.add(jpf);
-    jpl3.add(jcb);
-    jlb3.setBounds(50, 20, 300, 20);
-    jlb2.setBounds(50, 120, 300, 20);
-    jtf.setBounds(50, 60, 300, 30);
-    jpf.setBounds(50, 160, 300, 30);
-    jcb.setBounds(50, 230, 300, 30);
-    jtp.addTab("电话号码", jpl3);
+    tipNameLabel = new JLabel("请输入你的昵称");
+    tipNameLabel.setBounds(50, 50, 300, 30);
+    container.add(tipNameLabel);
 
-    jpl4 = new JPanel();
-    jpl4.setLayout(null);
-    jlb4 = new JLabel("电子邮件");
-    jlb2 = new JLabel("密码");
-    jtf = new JTextField();
-    jpf = new JPasswordField();
-    jcb = new JCheckBox("记住密码");
-    jcb.setFont(font);
-    jpl4.add(jlb4);
-    jpl4.add(jlb2);
-    jpl4.add(jtf);
-    jpl4.add(jpf);
-    jpl4.add(jcb);
-    jlb4.setBounds(50, 20, 300, 20);
-    jlb2.setBounds(50, 120, 300, 20);
-    jtf.setBounds(50, 60, 300, 30);
-    jpf.setBounds(50, 160, 300, 30);
-    jcb.setBounds(50, 230, 300, 30);
-    jtp.addTab("电子邮件", jpl4);
+    passwdLabel = new JLabel("密码：");
+    passwdLabel.setBounds(50, 130, 300, 30);
+    container.add(passwdLabel);
 
-    jpl1.add(jtp);
-    jtp.setBounds(50, 50, 400, 300);
-    this.add(jpl1);
-    this.setTitle("Chatoy 登陆界面");
-    this.setSize(500, 500);
+    tipPasswdLabel = new JLabel("请输入你的密码");
+    tipPasswdLabel.setBounds(50, 160, 300, 30);
+    container.add(tipPasswdLabel);
+
+    // Fields
+    usernameField = new JTextField();
+    usernameField.setBounds(50, 90, 300, 30);
+    container.add(usernameField);
+
+    passwordField = new JPasswordField();
+    passwordField.setBounds(50, 200, 300, 30);
+    container.add(passwordField);
+
+    // Checkbox and button
+    agreeService = new JCheckBox("我同意所有关于服务的声明");
+    agreeService.setBounds(65, 240, 270, 30);
+    container.add(agreeService);
+
+    registerButton = new JButton("注册");
+    registerButton.setBounds(65, 290, 270, 60);
+    container.add(registerButton);
+
+    // 背景图片
+    var bgPicUrl = this.getClass().getResource("/img/background.png");
+    ImageIcon bgPic = new ImageIcon(bgPicUrl);
+    var bgPanel = new PicturePanel(bgPic.getImage());
+    bgPanel.setBounds(0, 0, 400, 450);
+    container.add(bgPanel);
+
+    this.setSize(400, 450);
+    this.setTitle("Chatoy 注册界面");
     this.setVisible(true);
-  }
-
-  class ListenerOne implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      if (e.getSource() == jbt2) {
-        new chatoy.Login();
-      }
-    }
   }
 }

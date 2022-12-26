@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class ShowUI {
+  private JButton registButton;
+
   public void UI() {
     // 创建窗体
     JFrame frame = new JFrame();
@@ -67,8 +69,10 @@ public class ShowUI {
     frame.add(autoLogin);
 
     // 按钮
-    JButton registButton = new JButton("注册");
+    registButton = new JButton("注册");
     registButton.setBounds(70, 150, 90, 40);
+    SkipListener onRegist = new SkipListener();
+    registButton.addActionListener(onRegist);
     frame.add(registButton);
 
     JButton loginButton = new JButton("登录");
@@ -91,6 +95,16 @@ public class ShowUI {
 
     // 窗体可见，写在 add 组件之后
     frame.setVisible(true);
+  }
+
+  //跳转注册界面
+  class SkipListener implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      if (e.getSource() == registButton) {
+        new Register();
+      }
+    }
   }
 
   // 判断账号密码是否正确——正确显示“登陆成功”，不正确显示“登录失败”
