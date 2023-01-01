@@ -1,7 +1,6 @@
 package component.mainframeleft;
 
-import component.jpanel.RoomPanel;
-import component.jscrollpane.DemoScrollBarUI;
+import component.allframe.DemoScrollBarUI;
 import democlass.database.Room;
 
 import javax.swing.*;
