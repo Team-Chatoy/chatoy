@@ -36,9 +36,9 @@ public class Register {
         // 设置窗口的属性
         theFrame.setBounds((ScreenUtils.getScreenWidth()-WIDTH)/2, (ScreenUtils.getScreenHeight()-HEIGHT)/2, WIDTH, HEIGHT);
         theFrame.setResizable(false);
-        theFrame.setIconImage(new ImageIcon("img/logo.png").getImage());
+        theFrame.setIconImage(new ImageIcon("resources/img/logo.png").getImage());
 
-        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon("img/LoginBackground.png").getImage());
+        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon("resources/img/LoginBackground.png").getImage());
         backgroundPanel.setBounds(0,0, WIDTH, HEIGHT);
 
         Box holeBox = Box.createVerticalBox();

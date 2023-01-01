@@ -37,10 +37,10 @@ public class App {
         theFrame.setBounds((ScreenUtils.getScreenWidth()-WIDTH)/2, (ScreenUtils.getScreenHeight()-HEIGHT)/2, WIDTH, HEIGHT);
         theFrame.setResizable(false);
         // logo
-        theFrame.setIconImage(new ImageIcon("img/logo.png").getImage());
+        theFrame.setIconImage(new ImageIcon("resources/resources/img/logo.png").getImage());
 
         // 设置窗口的内容
-        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon("img/LoginBackground.png").getImage());
+        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon("resources/img/LoginBackground.png").getImage());
 
         // 组装登录相关的元素
         Box holeBox = Box.createVerticalBox();

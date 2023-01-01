@@ -61,7 +61,7 @@ public class Chatoy {
         // 给窗口设置属性
         theFrame.setBounds((ScreenUtils.getScreenWidth()-WIDTH)/2, (ScreenUtils.getScreenHeight()-HEIGHT)/2, WIDTH, HEIGHT);
         // theFrame.setResizable(false);
-        theFrame.setIconImage(new ImageIcon("img/logo.png").getImage());
+        theFrame.setIconImage(new ImageIcon("resources/img/logo.png").getImage());
 
         // 设置菜单栏
         // JMenuBar jMenuBar = new JMenuBar();
@@ -205,7 +205,7 @@ public class Chatoy {
         bottomBox.add(textField);
         bottomBox.add(sendButton);
 
-        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon("img/LoginBackground.png").getImage());
+        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon("resources/img/LoginBackground.png").getImage());
         backgroundPanel.setLayout(new BorderLayout());
         backgroundPanel.add(bottomBox, BorderLayout.SOUTH);
 
