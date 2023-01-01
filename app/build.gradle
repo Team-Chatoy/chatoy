@@ -26,7 +26,7 @@ dependencies {
 
 application {
   // Define the main class for the application.
-  mainClass = 'chatoy.src.startups.Login'
+  mainClass = 'chatoy.Chatoy'
 }
 
 tasks.named('test') {
