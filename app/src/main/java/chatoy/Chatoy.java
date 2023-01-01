@@ -21,7 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
-public class Chatoy {
+public class App {
     JFrame theFrame = new JFrame("chatoy");
 
     final int WIDTH = 820;
@@ -231,7 +231,7 @@ public class Chatoy {
     }
 
     public static void main(String[] args) throws IOException {
-        Chatoy chatoy = new Chatoy();
+        App chatoy = new App();
         chatoy.init();
 
 

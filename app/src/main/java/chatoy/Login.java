@@ -40,10 +40,10 @@ public class Login {
         theFrame.setBounds((ScreenUtils.getScreenWidth()-WIDTH)/2, (ScreenUtils.getScreenHeight()-HEIGHT)/2, WIDTH, HEIGHT);
         theFrame.setResizable(false);
         // logo
-        theFrame.setIconImage(ImageIO.read(new File(PathUtils.getRealPath("logo.png"))));
+        theFrame.setIconImage(new ImageIcon("img/logo.png").getImage());
 
         // 设置窗口的内容
-        BackgroundPanel backgroundPanel = new BackgroundPanel(ImageIO.read(new File(PathUtils.getRealPath("LoginBackground.png"))));
+        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon("img/LoginBackground.png").getImage());
 
         // 组装登录相关的元素
         Box holeBox = Box.createVerticalBox();
