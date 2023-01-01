@@ -1,4 +1,4 @@
-package chatoy;
+package chatoy.src;
 import component.allframe.BackgroundPanel;
 import component.allframe.DemoScrollBarUI;
 import component.mainframeleft.LeftBox;
