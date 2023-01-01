@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class App {
+public class Chatoy {
     JFrame theFrame = new JFrame("chatoy");
 
     final int WIDTH = 820;
@@ -228,7 +228,7 @@ public class App {
     }
 
     public static void main(String[] args) throws IOException {
-        App chatoy = new App();
+        Chatoy chatoy = new Chatoy();
         chatoy.init();
 
 
