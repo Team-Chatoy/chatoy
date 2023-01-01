@@ -60,7 +60,7 @@ public class Chatoy {
         // 给窗口设置属性
         theFrame.setBounds((ScreenUtils.getScreenWidth()-WIDTH)/2, (ScreenUtils.getScreenHeight()-HEIGHT)/2, WIDTH, HEIGHT);
         // theFrame.setResizable(false);
-        theFrame.setIconImage(ImageIO.read(new File("images/logo.png")));
+        theFrame.setIconImage(ImageIO.read(new FileInputStream(images/logo.png)));
 
 
         // 设置菜单栏
