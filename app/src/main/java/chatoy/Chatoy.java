@@ -60,7 +60,9 @@ public class Chatoy {
         // 给窗口设置属性
         theFrame.setBounds((ScreenUtils.getScreenWidth()-WIDTH)/2, (ScreenUtils.getScreenHeight()-HEIGHT)/2, WIDTH, HEIGHT);
         // theFrame.setResizable(false);
-        theFrame.setIconImage(ImageIO.read(new File(PathUtils.getRealPath("logo.png"))));
+        var bgPicUrl = this.getClass().getResource("/images/LoginBackground.png");
+        ImageIcon bgPic = new ImageIcon(bgPicUrl);
+        theFrame.setIconImage(bgPic);
 
         // 设置菜单栏
         // JMenuBar jMenuBar = new JMenuBar();
