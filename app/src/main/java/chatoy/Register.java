@@ -111,7 +111,7 @@ public class Register {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    new Login().init();
+                    new App().init();
                     theFrame.dispose();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
