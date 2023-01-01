@@ -1,4 +1,4 @@
-package startups;
+package chatoy;
 
 import component.allframe.BackgroundPanel;
 import utils.PathUtils;

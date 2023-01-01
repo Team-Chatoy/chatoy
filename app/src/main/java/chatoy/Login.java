@@ -1,4 +1,4 @@
-package startups;
+package chatoy;
 
 import component.allframe.BackgroundPanel;
 import utils.PathUtils;
@@ -177,7 +177,7 @@ public class Login {
         buttonBox.add(registerButton);
 
         // Chatoy大title
-        JLabel title = new JLabel("Chatoy", SwingConstants.CENTER);
+        JLabel title = new JLabel("chatoy", SwingConstants.CENTER);
         Font titleFont=new Font("Cabin Sketch",Font.ITALIC,70);
         title.setForeground(Color.pink);
         title.setFont(titleFont);
