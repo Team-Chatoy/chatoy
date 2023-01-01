@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -34,16 +35,22 @@ public class Chatting extends JFrame{
     private JLabel chatterLabel;
     private JTextArea outputArea;
     private JTextField inputField;
+    private JScrollPane chatPanel;
 
-    public static void main(String[] args) {
-        Chatting chatting = new Chatting();
-    }
+    /**
+     *  public static void main(String[] args) {
+     Chatting chatting = new Chatting();
+     }
+     */
+
 
     public Chatting() {
-        JFrame frame = new JFrame();
-        frame.setTitle("聊天界面");
-        frame.setSize(600, 400);
-        Container container = frame.getContentPane();
+        //JFrame frame = new JFrame();
+        this.setTitle("聊天界面");
+        this.setSize(600, 400);
+        Container container =  this.getContentPane();
+
+
 
         //绘制好友列表SplitPanel
         listLabel = new JLabel("好友列表",SwingConstants.CENTER);
@@ -61,7 +68,9 @@ public class Chatting extends JFrame{
         outputArea = new JTextArea();
         inputField = new JTextField();
         enterPanel = new JPanel();
-        ChatSplitPanel1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT,false,chatterLabel,outputArea);
+        chatPanel = new JScrollPane(outputArea);
+        chatPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        ChatSplitPanel1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT,false,chatterLabel,chatPanel);
         ChatSplitPanel2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT,false,ChatSplitPanel1,enterPanel);
         ChatSplitPanel3 = new JSplitPane(JSplitPane.VERTICAL_SPLIT,false,ChatSplitPanel2,inputField);
         ChatSplitPanel2.setDividerLocation(250);
@@ -82,7 +91,8 @@ public class Chatting extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == enterbt) {
                     String text = inputField.getText();
-                    outputArea.setText(text);
+                    outputArea.append("我：" + text + "\n");
+                    inputField.setText(null);
                 }
                 else if(e.getSource() == chatterbt1){
                     chatterLabel.setText("小李");
@@ -99,24 +109,22 @@ public class Chatting extends JFrame{
         chatterbt1.addActionListener(listener);
         chatterbt2.addActionListener(listener);
 
-        var bgPicUrl = this.getClass().getResource("/img/background.png");
-        ImageIcon bgPic = new ImageIcon(bgPicUrl);
-        var bgPanel = new PicturePanel(bgPic.getImage());
-        bgPanel.setBounds(0, 0, 600, 400);
-        container.add(bgPanel);
 
 
-        //Set the look and feel
-        try {
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-            SwingUtilities.updateComponentTreeUI(frame);
-        } catch (Exception e) {
-            System.out.println("Error setting the LAF!");
-            e.printStackTrace();
-        }
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        /**
+         *  //Set the look and feel
+         try {
+         UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+         SwingUtilities.updateComponentTreeUI(frame);
+         } catch (Exception e) {
+         System.out.println("Error setting the LAF!");
+         e.printStackTrace();
+         }
+         */
+
+        this.setVisible(true);
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
 }
