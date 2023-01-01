@@ -4,6 +4,7 @@ import java.awt.Container;
 
 import javax.swing.*;
 
+//stop
 public class Register extends JFrame {
   private JLabel usernameLabel;
   private JLabel tipNameLabel;

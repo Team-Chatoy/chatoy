@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
+//stop
 public class PicturePanel extends JPanel {
   Image img;
 

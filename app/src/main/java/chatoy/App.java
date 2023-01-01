@@ -8,6 +8,7 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+//stop
 public class App {
   public String getGreeting() {
     return "Hello, Chatoy!";
