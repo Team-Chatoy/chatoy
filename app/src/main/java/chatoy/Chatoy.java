@@ -206,7 +206,7 @@ public class Chatoy {
         bottomBox.add(textField);
         bottomBox.add(sendButton);
 
-        BackgroundPanel backgroundPanel = new BackgroundPanel(ImageIO.read(new File(PathUtils.getRealPath("LoginBackground.png"))));
+        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon("images/LoginBackground.png").getImage());
         backgroundPanel.setLayout(new BorderLayout());
         backgroundPanel.add(bottomBox, BorderLayout.SOUTH);
 
