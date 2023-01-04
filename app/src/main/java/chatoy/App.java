@@ -37,12 +37,11 @@ public class App {
         theFrame.setBounds((ScreenUtils.getScreenWidth()-WIDTH)/2, (ScreenUtils.getScreenHeight()-HEIGHT)/2, WIDTH, HEIGHT);
         theFrame.setResizable(false);
         // logo
-        App test = new App();
-        ImageIcon logoIcon = new ImageIcon(test.getClass().getResource("/img/logo.png"));
+        ImageIcon logoIcon = new ImageIcon(this.getClass().getResource("/img/logo.png"));
         theFrame.setIconImage(logoIcon.getImage());
 
         // 设置窗口的内容
-        ImageIcon imageIcon = new ImageIcon(test.getClass().getResource("/img/LoginBackground.png"));
+        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("/img/LoginBackground.png"));
         BackgroundPanel backgroundPanel = new BackgroundPanel(imageIcon.getImage());
 
         // 组装登录相关的元素

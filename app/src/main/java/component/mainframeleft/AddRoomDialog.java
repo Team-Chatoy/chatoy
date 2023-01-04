@@ -1,6 +1,5 @@
 package component.mainframeleft;
 
-import utils.PathUtils;
 import utils.ScreenUtils;
 
 import javax.swing.*;
