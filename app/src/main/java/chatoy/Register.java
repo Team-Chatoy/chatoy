@@ -38,9 +38,9 @@ public class Register {
         theFrame.setResizable(false);
 
         Register test = new Register();
-        ImageIcon logoIcon = new ImageIcon(test.getClass().getResource("/img/logo.png"));
+        ImageIcon logoIcon = new ImageIcon(test.getClass().getResource(PathUtils.getRealPath("logo.png")));
         theFrame.setIconImage(logoIcon.getImage());
-        ImageIcon loginBackgroundIcon = new ImageIcon(test.getClass().getResource("/img/LoginBackground.png"));
+        ImageIcon loginBackgroundIcon = new ImageIcon(test.getClass().getResource(PathUtils.getRealPath("/img/LoginBackground.png")));
         BackgroundPanel backgroundPanel = new BackgroundPanel(loginBackgroundIcon.getImage());
         backgroundPanel.setBounds(0,0, WIDTH, HEIGHT);
 

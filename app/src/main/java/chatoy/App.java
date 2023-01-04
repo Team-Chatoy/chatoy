@@ -1,6 +1,7 @@
 package chatoy;
 
 import component.allframe.BackgroundPanel;
+import utils.PathUtils;
 import utils.ScreenUtils;
 
 import javax.swing.*;
@@ -37,12 +38,10 @@ public class App {
         theFrame.setBounds((ScreenUtils.getScreenWidth()-WIDTH)/2, (ScreenUtils.getScreenHeight()-HEIGHT)/2, WIDTH, HEIGHT);
         theFrame.setResizable(false);
         // logo
-        ImageIcon logoIcon = new ImageIcon(this.getClass().getResource("/img/logo.png"));
-        theFrame.setIconImage(logoIcon.getImage());
+        theFrame.setIconImage(new ImageIcon(this.getClass().getResource(PathUtils.getRealPath("logo.png"))).getImage());
 
         // 设置窗口的内容
-        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("/img/LoginBackground.png"));
-        BackgroundPanel backgroundPanel = new BackgroundPanel(imageIcon.getImage());
+        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon(this.getClass().getResource(PathUtils.getRealPath("LoginBackground.png"))).getImage());
 
         // 组装登录相关的元素
         Box holeBox = Box.createVerticalBox();

@@ -3,12 +3,44 @@
  */
 package chatoy;
 
+import com.sun.jdi.PathSearchingVirtualMachine;
+import com.sun.jdi.connect.Connector;
+import component.allframe.BackgroundPanel;
 import org.junit.jupiter.api.Test;
+import utils.PathUtils;
+import utils.ScreenUtils;
+
+import javax.swing.*;
+
+import java.awt.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-  @Test void appHasAGreeting() {
-    App classUnderTest = new App();
-    assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
-  }
+    @Test void appHasAGreeting() {
+
+    }
+
+    public static void main(String[] args) {
+        AppTest ttt = new AppTest();
+        JFrame jFrame = new JFrame();
+        int WIDTH = 400;
+        int HEIGHT =400;
+        jFrame.setBounds((ScreenUtils.getScreenWidth()-WIDTH)/2, (ScreenUtils.getScreenHeight()-HEIGHT)/2, WIDTH, HEIGHT);
+
+        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon(ttt.getClass().getResource(PathUtils.getRealPath("LoginBackground.png"))).getImage());
+
+        backgroundPanel.setLayout(new BorderLayout());
+        JSplitPane jSplitPane = new JSplitPane();
+        JPanel jPanel =new JPanel();
+        jPanel.setOpaque(false);
+        jSplitPane.setRightComponent(jPanel);
+        jSplitPane.setOpaque(false);
+        backgroundPanel.add(jSplitPane, BorderLayout.CENTER);
+        jFrame.add(backgroundPanel);
+
+
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.setVisible(true);
+    }
 }

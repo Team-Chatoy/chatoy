@@ -27,6 +27,7 @@ public class Chatoy {
     Font font;
     Font unchosenFont = new Font("Cabin Sketch",Font.ITALIC,70);
     JSplitPane jSplitPane = new JSplitPane();
+    JSplitPane rightSplitPane = new JSplitPane();
 
     Room[] rooms;
 
@@ -55,7 +56,7 @@ public class Chatoy {
         // 给窗口设置属性
         theFrame.setBounds((ScreenUtils.getScreenWidth()-WIDTH)/2, (ScreenUtils.getScreenHeight()-HEIGHT)/2, WIDTH, HEIGHT);
         // theFrame.setResizable(false);
-        theFrame.setIconImage(new ImageIcon(this.getClass().getResource("/img/logo.png")).getImage());
+        theFrame.setIconImage(new ImageIcon(this.getClass().getResource(PathUtils.getRealPath("logo.png"))).getImage());
 
         // 设置菜单栏
         // JMenuBar jMenuBar = new JMenuBar();
@@ -235,11 +236,13 @@ public class Chatoy {
 
         unchosenPanel.add(unchosenLabel, BorderLayout.CENTER);
 
+        //
+        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon(this.getClass().getResource(PathUtils.getRealPath("LoginBackground.png"))).getImage());
+        backgroundPanel.setLayout(new BorderLayout());
+        backgroundPanel.add(rightSplitPane, BorderLayout.CENTER);
+        rightSplitPane.setOpaque(false);
 
-        jSplitPane.setRightComponent(unchosenPanel);
-
-        theFrame.add(jSplitPane);
-
+        theFrame.setContentPane(jSplitPane);
         // setVisible
         theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         theFrame.setVisible(true);
@@ -396,7 +399,7 @@ public class Chatoy {
         rightSplitPane.setDividerLocation(400);
         rightSplitPane.setDividerSize(1);
 
-        // 消息输入区
+        // 标题区
         Font titelFront = new Font("Cabin Sketch",Font.PLAIN,40);
         JLabel titelLabel = new JLabel();
         titelLabel.setFont(titelFront);
@@ -436,16 +439,19 @@ public class Chatoy {
         // 发送消息区域
         JPanel messagesPanel = new JPanel();
         messagesPanel.setOpaque(false);
+        messagesPanel.setLayout(new BorderLayout());
+        JScrollPane messagesScrollPane = new JScrollPane(messagesPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        messagesScrollPane.setOpaque(false);
+        messagesScrollPane.getViewport().setOpaque(false);
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // 设置message区域组件
-                String messageContent = textArea.getText();
                 JPanel messagePanel = new JPanel();
                 Box messageContentBox = Box.createHorizontalBox();
                 JTextArea messageTextArea = new JTextArea();
-
                 // 获取输入的text内容
+                String messageContent = textArea.getText();
                 messageTextArea.setText(messageContent);
                 // 组装一条messagePanel
                 messageContentBox.add(messageTextArea);
@@ -453,7 +459,9 @@ public class Chatoy {
                 messagePanel.setLayout(new BorderLayout());
                 messagePanel.add(messageContentBox, BorderLayout.EAST);
                 // 组装messagesPanel
-                JScrollPane messagesScrollPane = new JScrollPane(messagesPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                messagesPanel.add(messagePanel, BorderLayout.PAGE_END);
+                messagesScrollPane.updateUI();
+
 
             }
         });
@@ -461,10 +469,10 @@ public class Chatoy {
         // 组装
 
         // 组装分割线上侧
-        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon(this.getClass().getResource("/img/LoginBackground.png")).getImage());
+        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon(this.getClass().getResource(PathUtils.getRealPath("LoginBackground.png"))).getImage());
         backgroundPanel.setLayout(new BorderLayout());
         backgroundPanel.add(titelPanel, BorderLayout.NORTH);
-        backgroundPanel.add(messagesPanel, BorderLayout.CENTER);
+        backgroundPanel.add(messagesScrollPane, BorderLayout.CENTER);
 
         rightSplitPane.setTopComponent(backgroundPanel);
         rightSplitPane.setBottomComponent(textButtonPanel);
