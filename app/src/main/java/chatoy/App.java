@@ -161,6 +161,7 @@ public class App {
     holeBox.add(Box.createVerticalStrut(20));
     holeBox.add(buttonBox);
 
+
     // 创建一个纯色底面
     JPanel jPanel = new JPanel();
     jPanel.setBorder(etchedBorder);
