@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
+import javax.swing.border.MatteBorder;
 import javax.swing.plaf.FontUIResource;
 
 import utils.PathUtils;
@@ -21,10 +22,12 @@ public class App {
   JTextField accountTextField;
   JPasswordField passwordTextField;
   Font font;
+  MatteBorder underlineBorder =
+          new MatteBorder(0,0,1,0,Color.white);
   Border etchedBorder =
-    BorderFactory.createEtchedBorder(BevelBorder.RAISED, Color.white, Color.pink);
+          BorderFactory.createEtchedBorder(BevelBorder.RAISED, Color.white, Color.pink);
   Border lineBorder =
-    BorderFactory.createLineBorder(Color.pink);
+          BorderFactory.createLineBorder(Color.pink);
 
   // 组装视图
   public void init() throws IOException {
@@ -34,51 +37,38 @@ public class App {
 
     // 设置窗口相关属性
     theFrame.setBounds(
-      (ScreenUtils.getScreenWidth() - WIDTH) / 2,
-      (ScreenUtils.getScreenHeight() - HEIGHT) / 2,
-      WIDTH,
-      HEIGHT
+            (ScreenUtils.getScreenWidth() - WIDTH) / 2,
+            (ScreenUtils.getScreenHeight() - HEIGHT) / 2,
+            WIDTH,
+            HEIGHT
     );
     theFrame.setResizable(false);
     theFrame.setIconImage(
-      new ImageIcon(
-        this.getClass()
-          .getResource(PathUtils.getRealPath("logo.png"))
-      )
-      .getImage()
+            new ImageIcon(
+                    this.getClass()
+                            .getResource(PathUtils.getRealPath("logo.png"))
+            )
+                    .getImage()
     );
 
     // 设置窗口的内容
     BackgroundPanel backgroundPanel =
-      new BackgroundPanel(
-        new ImageIcon(
-          this.getClass()
-            .getResource(PathUtils.getRealPath("LoginBackground.png"))
-        )
-        .getImage()
-      );
+            new BackgroundPanel(
+                    new ImageIcon(
+                            this.getClass()
+                                    .getResource(PathUtils.getRealPath("LoginBackground.png"))
+                    )
+                            .getImage()
+            );
 
     // 组装登录相关的元素
     Box holeBox = Box.createVerticalBox();
-
-    // 输入网址
-    Box httpBox = Box.createHorizontalBox();
-    JLabel httpLabel = new JLabel("网址：");
-    httpLabel.setForeground(Color.pink); // 字体设为粉色
-    JTextField httpTextField = new JTextField();
-    httpTextField.setForeground(Color.gray); // 文本框字体设为浅灰色
-    httpTextField.setOpaque(false); // 文本框设置为透明
-    httpTextField.setBorder(lineBorder); // 粉色边框
-
-    httpBox.add(httpLabel);
-    httpBox.add(Box.createHorizontalStrut(6));
-    httpBox.add(httpTextField);
 
     // 组装用户名
     Box accountBox = Box.createHorizontalBox();
     JLabel accountLabel = new JLabel("账号：");
     accountLabel.setForeground(Color.pink); // 字体设为粉色
-    accountTextField = new JTextField(15);
+    accountTextField = new JTextField("请输入用户名",15);
     accountTextField.setForeground(Color.gray); // 文本框字体设为浅灰色
     accountTextField.setOpaque(false); // 文本框设置为透明
     accountTextField.setBorder(lineBorder); // 粉色边框
@@ -87,18 +77,65 @@ public class App {
     accountBox.add(Box.createHorizontalStrut(6));
     accountBox.add(accountTextField);
 
+    accountTextField.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseExited(MouseEvent e) {
+        if(accountTextField.getText().equals("")){
+          accountTextField.setText("请输入用户名");
+          accountTextField.setForeground(Color.gray);
+        }
+      }
+      @Override
+      public void mouseEntered(MouseEvent e) {
+        if(accountTextField.getText().equals("请输入用户名")){
+          accountTextField.setText("");
+          accountTextField.setForeground(Color.pink);
+        }
+      }
+    });
+
     // 组装密码
     Box passwordBox = Box.createHorizontalBox();
     JLabel passwordLabel = new JLabel("密码：");
     passwordLabel.setForeground(Color.pink); // 字体设为粉色
     passwordTextField = new JPasswordField(15);
-    passwordTextField.setForeground(Color.white); // 文本框字体设为浅灰色
+    passwordTextField.setForeground(Color.gray); // 文本框字体设为浅灰色
     passwordTextField.setOpaque(false); // 文本框设置为透明
     passwordTextField.setBorder(lineBorder); // 粉色边框
 
     passwordBox.add(passwordLabel);
     passwordBox.add(Box.createHorizontalStrut(6));
     passwordBox.add(passwordTextField);
+
+    // 输入网址
+    Box httpBox = Box.createHorizontalBox();
+    JLabel httpLabel = new JLabel("网址：");
+    httpLabel.setForeground(Color.pink); // 字体设为粉色
+    JTextField httpTextField = new JTextField("请输入网址");
+    httpTextField.setForeground(Color.gray); // 文本框字体设为浅灰色
+    httpTextField.setOpaque(false); // 文本框设置为透明
+    httpTextField.setBorder(lineBorder); // 粉色边框
+
+    httpBox.add(httpLabel);
+    httpBox.add(Box.createHorizontalStrut(6));
+    httpBox.add(httpTextField);
+
+    httpTextField.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseExited(MouseEvent e) {
+        if(httpTextField.getText().equals("")){
+          httpTextField.setText("请输入网址");
+          httpTextField.setForeground(Color.gray);
+        }
+      }
+      @Override
+      public void mouseEntered(MouseEvent e) {
+        if(httpTextField.getText().equals("请输入网址")){
+          httpTextField.setText("");
+          httpTextField.setForeground(Color.pink);
+        }
+      }
+    });
 
     // 组装按钮
     Box buttonBox = Box.createHorizontalBox();
@@ -152,15 +189,14 @@ public class App {
 
     holeBox.add(Box.createVerticalStrut(20));
     holeBox.add(titleBox);
-    holeBox.add(Box.createVerticalStrut(25));
-    holeBox.add(httpBox);
     holeBox.add(Box.createVerticalStrut(15));
     holeBox.add(accountBox);
     holeBox.add(Box.createVerticalStrut(15));
     holeBox.add(passwordBox);
+    holeBox.add(Box.createVerticalStrut(15));
+    holeBox.add(httpBox);
     holeBox.add(Box.createVerticalStrut(20));
     holeBox.add(buttonBox);
-
 
     // 创建一个纯色底面
     JPanel jPanel = new JPanel();

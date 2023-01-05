@@ -1,5 +1,7 @@
 package chatoy;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,8 +24,10 @@ public class Register {
   final int HEIGHT = 550 * 1584 / 1800; // 背景图片 1800 * 1584
   Font font;
   Border etchedBorder =
-    BorderFactory.createEtchedBorder(BevelBorder.RAISED, Color.white, Color.pink);
+          BorderFactory.createEtchedBorder(BevelBorder.RAISED, Color.white, Color.pink);
 
+  Border lineBorder =
+          BorderFactory.createLineBorder(Color.pink);
   // 组装视图
   public void init() throws IOException {
     // 全局微软雅黑字体
@@ -32,21 +36,21 @@ public class Register {
 
     // 设置窗口的属性
     theFrame.setBounds(
-      (ScreenUtils.getScreenWidth() - WIDTH) / 2,
-      (ScreenUtils.getScreenHeight() - HEIGHT) / 2,
-      WIDTH,
-      HEIGHT
+            (ScreenUtils.getScreenWidth() - WIDTH) / 2,
+            (ScreenUtils.getScreenHeight() - HEIGHT) / 2,
+            WIDTH,
+            HEIGHT
     );
     theFrame.setResizable(false);
 
     ImageIcon logoIcon = new ImageIcon(
-      this.getClass()
-        .getResource(PathUtils.getRealPath("logo.png"))
+            this.getClass()
+                    .getResource(PathUtils.getRealPath("logo.png"))
     );
     theFrame.setIconImage(logoIcon.getImage());
     ImageIcon loginBackgroundIcon = new ImageIcon(
-      this.getClass()
-        .getResource(PathUtils.getRealPath("/img/LoginBackground.png"))
+            this.getClass()
+                    .getResource(PathUtils.getRealPath("LoginBackground.png"))
     );
     BackgroundPanel backgroundPanel = new BackgroundPanel(loginBackgroundIcon.getImage());
     backgroundPanel.setBounds(0, 0, WIDTH, HEIGHT);
@@ -57,14 +61,31 @@ public class Register {
     Box userNameBox = Box.createHorizontalBox();
     JLabel userNameLabel = new JLabel("用  户  名："); // review: it's a bad way to set text
     userNameLabel.setForeground(Color.pink);
-    JTextField userTextField = new JTextField(15);
+    JTextField userTextField = new JTextField("请输入用户名",15);
     userTextField.setOpaque(false);
-    userTextField.setForeground(Color.white);
-    userTextField.setBorder(etchedBorder); // 粉色边框
+    userTextField.setForeground(Color.gray);
+    userTextField.setBorder(lineBorder); // 粉色边框
 
     userNameBox.add(userNameLabel);
     userNameBox.add(Box.createHorizontalStrut(8));
     userNameBox.add(userTextField);
+
+    userTextField.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseExited(MouseEvent e) {
+        if(userTextField.getText().equals("")){
+          userTextField.setText("请输入用户名");
+          userTextField.setForeground(Color.gray);
+        }
+      }
+      @Override
+      public void mouseEntered(MouseEvent e) {
+        if(userTextField.getText().equals("请输入用户名")){
+          userTextField.setText("");
+          userTextField.setForeground(Color.pink);
+        }
+      }
+    });
 
     // 组装密码
     Box passwordBox = Box.createHorizontalBox();
@@ -73,7 +94,7 @@ public class Register {
     JPasswordField passwordTextField = new JPasswordField(15);
     passwordTextField.setOpaque(false);
     passwordTextField.setForeground(Color.white);
-    passwordTextField.setBorder(etchedBorder); // 粉色边框
+    passwordTextField.setBorder(lineBorder); // 粉色边框
 
     passwordBox.add(passwordLabel);
     passwordBox.add(Box.createHorizontalStrut(9));
@@ -86,7 +107,7 @@ public class Register {
     JPasswordField password2TextField = new JPasswordField(15);
     password2TextField.setOpaque(false);
     password2TextField.setForeground(Color.white);
-    password2TextField.setBorder(etchedBorder); // 粉色边框
+    password2TextField.setBorder(lineBorder); // 粉色边框
 
     password2Box.add(password2Label);
     password2Box.add(Box.createHorizontalStrut(10));

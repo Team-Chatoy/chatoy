@@ -11,6 +11,8 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Date;
 
 public class CreateRoomPanel {
@@ -21,9 +23,10 @@ public class CreateRoomPanel {
     Font font1 = new Font("微软雅黑",Font.PLAIN,12);
     Font font2 = new Font("微软雅黑",Font.PLAIN,20);
     // 将文本框显示为下划线
-    MatteBorder underlineBorder = new MatteBorder(0,0,1,0,Color.pink);
-    Border etchedBorder = BorderFactory.createEtchedBorder(BevelBorder.RAISED,
-            Color.white, Color.pink);
+    MatteBorder underlineBorder =
+            new MatteBorder(0,0,1,0,Color.pink);
+    Border etchedBorder =
+            BorderFactory.createEtchedBorder(BevelBorder.RAISED, Color.white, Color.pink);
 
     JFrame theFrame = new JFrame();
     public static Room createdRoom;
@@ -76,15 +79,48 @@ public class CreateRoomPanel {
         userTokenTextField.setFont(font1);
         userTokenTextField.setBorder(underlineBorder);
         userTokenTextField.setBackground(new Color(38,45,49));
-        userTokenTextField.setForeground(Color.pink);
+        userTokenTextField.setForeground(Color.gray);
         userTokenTextField.setPreferredSize(new Dimension(100, 20));
+        userTokenTextField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if(userTokenTextField.getText().equals("")){
+                    userTokenTextField.setText("请输入您的Token");
+                    userTokenTextField.setForeground(Color.gray);
+                }
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if(userTokenTextField.getText().equals("请输入您的Token")){
+                    userTokenTextField.setText("");
+                    userTokenTextField.setForeground(Color.pink);
+                }
+            }
+        });
+
         // roomNameTextField
         JTextField roomNameTextField = new JTextField("请输入创建房间的名称",10);
         roomNameTextField.setFont(font1);
         roomNameTextField.setBorder(underlineBorder);
         roomNameTextField.setBackground(new Color(38,45,49));
-        roomNameTextField.setForeground(Color.pink);
+        roomNameTextField.setForeground(Color.gray);
         roomNameTextField.setPreferredSize(new Dimension(100, 20));
+        roomNameTextField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if(roomNameTextField.getText().equals("")){
+                    roomNameTextField.setText("请输入创建房间的名称");
+                    roomNameTextField.setForeground(Color.gray);
+                }
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if(roomNameTextField.getText().equals("请输入创建房间的名称")){
+                    roomNameTextField.setText("");
+                    roomNameTextField.setForeground(Color.pink);
+                }
+            }
+        });
 
         // createRoomButton
         JButton createRoomButton = new JButton(" 创建房间 ");
@@ -150,7 +186,7 @@ public class CreateRoomPanel {
                 theFrame.add(backgroundPanel);
 
                 String roomName = roomNameTextField.getText();
-                createdRoom = new Room(roomID,roomName,null,new Date());
+                createdRoom = new Room(roomID,roomName,"Welcome to " + roomName,new Date());
                 JPanel createdRoomPanel = Chatoy.createRoomPanel(createdRoom);;
                 Chatoy.loadRoomsBox().add(createdRoomPanel);
                 Chatoy.loadRoomsBox().add(Box.createVerticalStrut(10));

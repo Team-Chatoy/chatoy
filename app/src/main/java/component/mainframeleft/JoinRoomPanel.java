@@ -11,40 +11,24 @@ import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Date;
 
 public class JoinRoomPanel {
 
-    final int WIDTH = 395;
-    final int HEIGHT = 110;
+    final int WIDTH = 390;
+    final int HEIGHT = 100;
 
     Font font1 = new Font("微软雅黑",Font.PLAIN,12);
     Font font2 = new Font("微软雅黑",Font.PLAIN,20);
-    Border etchedBorder = BorderFactory.createEtchedBorder(BevelBorder.RAISED,
-            Color.white, Color.pink);
+    public static Room createdRoom;
+    Border etchedBorder =
+            BorderFactory.createEtchedBorder(BevelBorder.RAISED, Color.white, Color.pink);
 
     JFrame theFrame = new JFrame();
 
-    public static Room createdRoom;
     public void init() {
-        /*     try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (InstantiationException ex) {
-            ex.printStackTrace();
-        } catch (IllegalAccessException ex) {
-            ex.printStackTrace();
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        //改变风格*/
-
 
         theFrame.setBounds((ScreenUtils.getScreenWidth()-WIDTH)/2, (ScreenUtils.getScreenHeight()-WIDTH)/2, WIDTH, HEIGHT);
         //theFrame.setResizable(false);
@@ -64,9 +48,25 @@ public class JoinRoomPanel {
         JTextField roomSearchTextField = new JTextField("请输入要查找的房间号",20);
         roomSearchTextField.setFont(font1);
         roomSearchTextField.setOpaque(false);
-        roomSearchTextField.setForeground(Color.pink);
+        roomSearchTextField.setForeground(Color.gray);
         roomSearchTextField.setBorder(BorderFactory.createLineBorder(Color.pink));
         roomSearchTextField.setPreferredSize(new Dimension(150, 20));
+        roomSearchTextField.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                if(roomSearchTextField.getText().equals("")){
+                    roomSearchTextField.setText("请输入要查找的房间号");
+                    roomSearchTextField.setForeground(Color.gray);
+                }
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                if(roomSearchTextField.getText().equals("请输入要查找的房间号")){
+                    roomSearchTextField.setText("");
+                    roomSearchTextField.setForeground(Color.pink);
+                }
+            }
+        });
 
         JButton roomSearchButton = new JButton("查找");
         roomSearchButton.setFont(font1);
@@ -105,7 +105,7 @@ public class JoinRoomPanel {
         searchRoomPanel.setDividerLocation(65);
         searchRoomPanel.setDividerSize(0);
         searchedRoomPanel.setVisible(false);
-        searchRoomPanel.setBounds(0,0, 380, 75);
+        searchRoomPanel.setBounds(0,0, 380, 65);
         searchRoomPanel.setBackground(new Color(38, 45 ,49));
 
 
@@ -194,8 +194,15 @@ public class JoinRoomPanel {
                         JPanel createdRoomPanel = Chatoy.createRoomPanel(createdRoom);
                         searchedRoomPanel.add(createdRoomPanel);
                         Border lineBorder = BorderFactory.createLineBorder(Color.gray);
-
                     }
+                }
+                // 查找失败显示搜索失败提示
+                if(Integer.parseInt(roomID) > Chatoy.rooms.size()){
+                    searchedRoomPanel.add(failSearchLabel,BorderLayout.CENTER);
+                    searchRoomPanel.setSize(380,170);
+                    backgroundPanel.setSize(WIDTH,200);
+                    theFrame.setSize(WIDTH,200);
+                    searchedRoomPanel.setVisible(true);
                 }
 
 
@@ -203,11 +210,8 @@ public class JoinRoomPanel {
         });
 
         theFrame.add(backgroundPanel);
-
-        /*        theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
         theFrame.setVisible(true);
     }
 }
-
 
 
