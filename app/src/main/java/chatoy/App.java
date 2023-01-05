@@ -1,12 +1,12 @@
 package chatoy;
 
 import java.io.IOException;
+import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.plaf.FontUIResource;
-import java.awt.*;
-import java.awt.event.*;
 
 import utils.ScreenUtils;
 import component.allframe.BackgroundPanel;
