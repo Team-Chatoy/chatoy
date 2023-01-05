@@ -48,7 +48,7 @@ public class Register {
 
     // 组装用户名
     Box userNameBox = Box.createHorizontalBox();
-    JLabel userNameLabel = new JLabel("用  户  名：");
+    JLabel userNameLabel = new JLabel("用  户  名："); // review: it's a bad way to set the label
     userNameLabel.setForeground(Color.pink);
     JTextField userTextField = new JTextField(15);
     userTextField.setOpaque(false);
@@ -61,7 +61,7 @@ public class Register {
 
     // 组装密码
     Box passwordBox = Box.createHorizontalBox();
-    JLabel passwordLabel = new JLabel("密       码：");
+    JLabel passwordLabel = new JLabel("密       码："); // review: and this one
     passwordLabel.setForeground(Color.pink);
     JPasswordField passwordTextField = new JPasswordField(15);
     passwordTextField.setOpaque(false);
@@ -93,33 +93,32 @@ public class Register {
     backButton.setBackground(Color.pink);
 
     regisButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // 获取用户录入的信息
-            String userName = userTextField.getText().trim();
-            String password = passwordTextField.getPassword().toString();
-            String password2 = password2TextField.getPassword().toString();
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        // 获取用户录入的信息
+        String userName = userTextField.getText().trim();
+        String password = passwordTextField.getPassword().toString();
+        String password2 = password2TextField.getPassword().toString();
 
-            Map<String,String> params = new HashMap<>();
-            params.put("userName", userName);
-            params.put("password", password);
-            params.put("password2", password2);
+        Map<String, String> params = new HashMap<>();
+        params.put("userName", userName);
+        params.put("password", password);
+        params.put("password2", password2);
 
-            // 访问后台接口
-
-        }
+        // 访问后台接口
+      }
     });
 
     backButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                new App().init();
-                theFrame.dispose();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        try {
+          new App().init();
+          theFrame.dispose();
+        } catch (IOException ex) {
+          throw new RuntimeException(ex);
         }
+      }
     });
 
 
@@ -127,12 +126,12 @@ public class Register {
     buttonBox.add(Box.createHorizontalStrut(40));
     buttonBox.add(backButton);
 
-    // Chatoy大title
-    JLabel title = new JLabel("register", SwingConstants.CENTER);
-    Font titleFont=new Font("Cabin Sketch",Font.ITALIC,50);
+    // Chatoy 大 title
+    JLabel title = new JLabel("Register", SwingConstants.CENTER);
+    Font titleFont=new Font("Cabin Sketch", Font.ITALIC, 50);
     title.setForeground(Color.white);
     title.setFont(titleFont);
-    title.setLocation(50,50);
+    title.setLocation(50, 50);
     Box titleBox = Box.createHorizontalBox();
     titleBox.add(title);
 
@@ -148,14 +147,12 @@ public class Register {
     holeBox.add(buttonBox);
 
     // 创建一个纯色底面
-
     JPanel jPanel = new JPanel();
     jPanel.setBorder(etchedBorder);
-    jPanel.setBounds(105,70,340,300);
+    jPanel.setBounds(105, 70, 340, 300);
     jPanel.setBackground(new Color(5, 5, 5));
     jPanel.add(holeBox);
     backgroundPanel.setLayout(null);
-    // backgroundPanel.setLayout(new GridBagLayout());
     backgroundPanel.add(jPanel);
 
     theFrame.add(backgroundPanel);
