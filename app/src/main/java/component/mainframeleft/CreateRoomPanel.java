@@ -151,7 +151,7 @@ public class CreateRoomPanel {
 
                 String roomName = roomNameTextField.getText();
                 createdRoom = new Room(roomID,roomName,null,new Date());
-                JPanel createdRoomPanel = Chatoy.createRoomPanel(createdRoom);;
+                JPanel createdRoomPanel = Chatoy.createRoomPanel(createdRoom);
                 Chatoy.loadRoomsBox().add(createdRoomPanel);
                 Chatoy.loadRoomsBox().add(Box.createVerticalStrut(10));
                 Chatoy.rooms.add(createdRoom);
