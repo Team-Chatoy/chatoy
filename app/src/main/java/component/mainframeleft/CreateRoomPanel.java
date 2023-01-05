@@ -1,6 +1,5 @@
 package component.mainframeleft;
 
-import java.util.Date;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,11 +8,12 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 
+import jni.Room;
 import utils.ScreenUtils;
-import democlass.database.Room;
 import chatoy.Chatoy;
 
 public class CreateRoomPanel {
+  static jni.Utils jni = new jni.Utils();
   final int WIDTH = 450;
   final int HEIGHT = 170;
   static int roomID = 4;
@@ -28,6 +28,15 @@ public class CreateRoomPanel {
 
   JFrame theFrame = new JFrame();
   public static Room createdRoom;
+
+  private String server;
+  private String token;
+  private Chatoy parent;
+  public CreateRoomPanel(String server, String token, Chatoy parent) {
+    this.server = server;
+    this.token = token;
+    this.parent = parent;
+  }
 
   public void init() {
     theFrame.setBounds(
@@ -155,16 +164,11 @@ public class CreateRoomPanel {
         backgroundPanel.add(successfullyCreatePanel);
         theFrame.add(backgroundPanel);
 
-        String roomName = roomNameTextField.getText();
-        createdRoom = new Room(roomID, roomName, null, new Date());
-        JPanel createdRoomPanel = Chatoy.createRoomPanel(createdRoom);
-        Chatoy.loadRoomsBox().add(createdRoomPanel);
-        Chatoy.loadRoomsBox().add(Box.createVerticalStrut(10));
-        Chatoy.rooms.add(createdRoom);
-        // 刷新 roomsPanel 界面
-        Chatoy.loadRoomsPanel().updateUI();
-
-        roomID += 1;
+        String name = roomNameTextField.getText();
+        var newRoomId = jni.createRoom(server, token, name);
+        var newRoom = jni.getRoomInfo(server, newRoomId);
+        parent.rooms.add(newRoom);
+        parent.loadRoomsPanel().updateUI();
       }
     });
 

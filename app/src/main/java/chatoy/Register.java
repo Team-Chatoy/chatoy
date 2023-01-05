@@ -1,8 +1,6 @@
 package chatoy;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +14,7 @@ import utils.ScreenUtils;
 import component.allframe.BackgroundPanel;
 
 public class Register {
+  jni.Utils jni = new jni.Utils();
   JFrame theFrame = new JFrame("注册");
 
   final int WIDTH = 550;
@@ -46,12 +45,24 @@ public class Register {
     theFrame.setIconImage(logoIcon.getImage());
     ImageIcon loginBackgroundIcon = new ImageIcon(
       this.getClass()
-        .getResource(PathUtils.getRealPath("/img/LoginBackground.png"))
+        .getResource(PathUtils.getRealPath("LoginBackground.png"))
     );
     BackgroundPanel backgroundPanel = new BackgroundPanel(loginBackgroundIcon.getImage());
     backgroundPanel.setBounds(0, 0, WIDTH, HEIGHT);
 
     Box holeBox = Box.createVerticalBox();
+
+    Box serverBox = Box.createHorizontalBox();
+    JLabel serverLabel = new JLabel("Server address:");
+    serverLabel.setForeground(Color.pink);
+    JTextField serverField = new JTextField(15);
+    serverField.setOpaque(false);
+    serverField.setForeground(Color.white);
+    serverField.setBorder(etchedBorder); // 粉色边框
+
+    serverBox.add(serverLabel);
+    serverBox.add(Box.createHorizontalStrut(8));
+    serverBox.add(serverField);
 
     // 组装用户名
     Box userNameBox = Box.createHorizontalBox();
@@ -103,20 +114,31 @@ public class Register {
       @Override
       public void actionPerformed(ActionEvent e) {
         // 获取用户录入的信息
-        String userName = userTextField.getText().trim();
-        String password = passwordTextField.getPassword().toString();
-        String password2 = password2TextField.getPassword().toString();
+        String server = serverField.getText().trim();
+        String username = userTextField.getText().trim();
+        String password = new String(passwordTextField.getPassword());
+        String password2 = new String(password2TextField.getPassword());
 
         if (!password.equals(password2)) {
-          // alert
+          System.err.println("两次密码不一致");
+          // TODO: alert
           return;
         }
 
-        Map<String, String> params = new HashMap<>();
-        params.put("userName", userName);
-        params.put("password", password);
+        var resp = jni.register(server, username, password);
 
-        // 访问后台接口
+        if (resp.getCode() == 0) {
+          System.out.println("注册成功！");
+          try {
+            new App().init();
+            theFrame.dispose();
+          } catch (IOException ex) {
+            throw new RuntimeException(ex);
+          }
+        } else {
+          System.err.println("注册失败：" + resp.getMsg());
+          // TODO: alert
+        }
       }
     });
 
@@ -148,6 +170,8 @@ public class Register {
     holeBox.add(Box.createVerticalStrut(18));
     holeBox.add(titleBox);
     holeBox.add(Box.createVerticalStrut(24));
+    holeBox.add(serverBox);
+    holeBox.add(Box.createVerticalStrut(18));
     holeBox.add(userNameBox);
     holeBox.add(Box.createVerticalStrut(18));
     holeBox.add(passwordBox);

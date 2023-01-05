@@ -13,7 +13,8 @@ import utils.ScreenUtils;
 import component.allframe.BackgroundPanel;
 
 public class App {
-  JFrame theFrame = new JFrame("chatoy");
+  jni.Utils jni = new jni.Utils();
+  JFrame theFrame = new JFrame("Chatoy");
 
   final int WIDTH = 550;
   final int HEIGHT = 550 * 1584 / 1800; // 背景图片 1800 * 1584
@@ -63,7 +64,7 @@ public class App {
 
     // 输入网址
     Box httpBox = Box.createHorizontalBox();
-    JLabel httpLabel = new JLabel("网址：");
+    JLabel httpLabel = new JLabel("Server address: ");
     httpLabel.setForeground(Color.pink); // 字体设为粉色
     JTextField httpTextField = new JTextField();
     httpTextField.setForeground(Color.gray); // 文本框字体设为浅灰色
@@ -76,7 +77,7 @@ public class App {
 
     // 组装用户名
     Box accountBox = Box.createHorizontalBox();
-    JLabel accountLabel = new JLabel("账号：");
+    JLabel accountLabel = new JLabel("Username: ");
     accountLabel.setForeground(Color.pink); // 字体设为粉色
     accountTextField = new JTextField(15);
     accountTextField.setForeground(Color.gray); // 文本框字体设为浅灰色
@@ -89,7 +90,7 @@ public class App {
 
     // 组装密码
     Box passwordBox = Box.createHorizontalBox();
-    JLabel passwordLabel = new JLabel("密码：");
+    JLabel passwordLabel = new JLabel("Password: ");
     passwordLabel.setForeground(Color.pink); // 字体设为粉色
     passwordTextField = new JPasswordField(15);
     passwordTextField.setForeground(Color.white); // 文本框字体设为浅灰色
@@ -111,16 +112,24 @@ public class App {
       @Override
       public void actionPerformed(ActionEvent e) {
         // 获取用户输入的数据
-        String account = accountTextField.getText();
-        String password = passwordTextField.getPassword().toString();
+        String server = httpTextField.getText();
+        String username = accountTextField.getText();
+        String password = new String(passwordTextField.getPassword());
 
-        // Perform Login
+        var resp = jni.login(server, username, password);
 
-        try {
-          new Chatoy().init();
-          theFrame.dispose();
-        } catch (IOException ex) {
-          throw new RuntimeException(ex);
+        if (resp.getCode() == 0) {
+          String token = resp.getMsg();
+          try {
+            new Chatoy(server, token).init();
+            theFrame.dispose();
+          } catch (IOException ex) {
+            throw new RuntimeException(ex);
+          }
+        } else {
+          String msg = resp.getMsg();
+          System.err.println(msg);
+          // TODO: alert
         }
       }
     });

@@ -1,25 +1,25 @@
 package chatoy;
 
-import component.allframe.BackgroundPanel;
-import component.allframe.DemoScrollBarUI;
-import component.mainframeleft.CreateRoomPanel;
-import component.mainframeleft.JoinRoomPanel;
-import democlass.database.Room;
-import utils.PathUtils;
-import utils.ScreenUtils;
-
+import java.io.IOException;
+import java.util.List;
+import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.plaf.FontUIResource;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.IOException;
-import java.util.*;
+
+import jni.Room;
+import utils.PathUtils;
+import utils.ScreenUtils;
+import component.allframe.BackgroundPanel;
+import component.allframe.DemoScrollBarUI;
+import component.mainframeleft.CreateRoomPanel;
+import component.mainframeleft.JoinRoomPanel;
 
 public class Chatoy {
+  static jni.Utils jni = new jni.Utils();
   JFrame theFrame = new JFrame("Chatoy");
 
   static final int WIDTH = 820;
@@ -31,7 +31,7 @@ public class Chatoy {
   static JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
   static JSplitPane rightSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
-  public static ArrayList<Room> rooms;
+  public List<Room> rooms;
 
   JTextArea roomDescription = new JTextArea();
 
@@ -42,6 +42,14 @@ public class Chatoy {
     BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.black, Color.black, Color.white, Color.pink);
   Border etchedBorder =
     BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.white, Color.pink);
+
+  private String server;
+  private String token;
+  public Chatoy(String server, String token) {
+    this.server = server;
+    this.token = token;
+    this.rooms = jni.getMyRooms(server, token);
+  }
 
   public void init() throws IOException {
     // 全局微软雅黑字体
@@ -111,7 +119,6 @@ public class Chatoy {
     roomsPanel.setBackground(new Color(19, 28, 33));
     roomsBox = Box.createVerticalBox();
     // 创建所有的图形化 room
-    rooms = loadRooms();
     for (int i = 0; i < rooms.size(); ++ i) {
       // roomPanel
       JPanel roomPanel = createRoomPanel(rooms.get(i));
@@ -143,11 +150,12 @@ public class Chatoy {
     leftBox.add(roomsScrollPane);
     jSplitPane.setLeftComponent(leftBox);
 
+    var that = this;
     // 组装后开始设置左侧区域的 Actionlistener 等
     joinRoomItem.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        new JoinRoomPanel().init();
+        new JoinRoomPanel(server, token, that).init();
       }
     });
 
@@ -156,7 +164,7 @@ public class Chatoy {
       @Override
       public void actionPerformed(ActionEvent e) {
         // 弹出一个对话框，让用户输入房间的信息
-        new CreateRoomPanel().init();
+        new CreateRoomPanel(server, token, that).init();
       }
     });
 
@@ -180,27 +188,11 @@ public class Chatoy {
     theFrame.setVisible(true);
   }
 
-  public static void main(String[] args) throws IOException {
-    // 测试用的 room (删除时同时删掉第 21 行)
-    Chatoy chatoy = new Chatoy();
-
-    chatoy.init();
-  }
-
-  // 向服务器请求room
-  public static ArrayList<Room> loadRooms() {
-    ArrayList<Room> rooms = new ArrayList<Room>();
-    rooms.add(new Room(1, "ROOM 1", "THIS IS A TEST", new Date()));
-    rooms.add(new Room(2, "ROOM 2", "THIS IS A TEST", new Date()));
-    rooms.add(new Room(3, "ROOM 3", "THIS IS A TEST", new Date()));
-    return rooms;
-  }
-
   public static Box loadRoomsBox() {
     return roomsBox;
   }
 
-  public static JPanel loadRoomsPanel() {
+  public JPanel loadRoomsPanel() {
     return roomsPanel;
   }
 
@@ -212,72 +204,6 @@ public class Chatoy {
       if (value instanceof FontUIResource) {
         UIManager.put(key, fontRes);
       }
-    }
-  }
-
-  // 自定义节点绘制器
-  private class MyRenderer extends DefaultTreeCellRenderer {
-    private ImageIcon root0Icon = null;
-    private ImageIcon root1Icon = null;
-    private ImageIcon root2Icon = null;
-    private ImageIcon root3Icon = null;
-    private ImageIcon root4Icon = null;
-
-    public MyRenderer() {
-      root0Icon = new ImageIcon(PathUtils.getRealPath("logo.png"));
-      root1Icon = new ImageIcon(PathUtils.getRealPath("logo.png"));
-      root2Icon = new ImageIcon(PathUtils.getRealPath("logo.png"));
-      root3Icon = new ImageIcon(PathUtils.getRealPath("logo.png"));
-      root4Icon = new ImageIcon(PathUtils.getRealPath("logo.png"));
-    }
-
-    // 当绘制树的每个节点时，都会调用这个方法
-    @Override
-    public Component getTreeCellRendererComponent(
-      JTree tree,
-      Object value,
-      boolean sel,
-      boolean expanded,
-      boolean leaf,
-      int row,
-      boolean hasFocus
-    ) {
-      super.getTreeCellRendererComponent(
-        tree,
-        value,
-        sel,
-        expanded,
-        leaf,
-        row,
-        hasFocus
-      );
-
-      ImageIcon image = null;
-      switch (row) {
-        case 0: {
-          image = root0Icon;
-          break;
-        }
-        case 1: {
-          image = root1Icon;
-          break;
-        }
-        case 2: {
-          image = root2Icon;
-          break;
-        }
-        case 3: {
-          image = root3Icon;
-          break;
-        }
-        case 4: {
-          image = root4Icon;
-          break;
-        }
-      }
-
-      this.setIcon(image);
-      return this;
     }
   }
 
@@ -417,9 +343,7 @@ public class Chatoy {
       @Override
       public void actionPerformed(ActionEvent e) {
         // 设置 message 区域组件
-        JPanel messagePanel = new JPanel();
         JPanel messageLongPanel = new JPanel();
-        Box messageBox = Box.createHorizontalBox();
         JTextArea messageTextArea = new JTextArea();
 
         // 设置文本展示区
@@ -470,11 +394,11 @@ public class Chatoy {
     rightSplitPane.setBottomComponent(textButtonPanel);
 
     // 设置背景
-    Chatoy chatoy = new Chatoy();
+    var fucking_java = new App(); // you should never do this but we have no time :)
     BackgroundPanel backgroundPanel =
       new BackgroundPanel(
         new ImageIcon(
-          chatoy.getClass()
+          fucking_java.getClass()
             .getResource(PathUtils.getRealPath("LoginBackground.png"))
         )
         .getImage()
