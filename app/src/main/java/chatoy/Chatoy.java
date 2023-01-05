@@ -16,7 +16,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 
 public class Chatoy {
     JFrame theFrame = new JFrame("chatoy");
@@ -26,8 +25,8 @@ public class Chatoy {
     int dividerLocation = 200;
     Font font;
     Font unchosenFont = new Font("Cabin Sketch",Font.ITALIC,70);
-    JSplitPane jSplitPane = new JSplitPane();
-    JSplitPane rightSplitPane = new JSplitPane();
+    JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+    JSplitPane rightSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
     Room[] rooms;
 
@@ -96,7 +95,7 @@ public class Chatoy {
         jSplitPane.setContinuousLayout(true);
         jSplitPane.setDividerLocation(dividerLocation);
         jSplitPane.setDividerSize(1);
-        jSplitPane.setBackground(Color.black);
+        jSplitPane.setBackground(Color.green);
 
 
         Border etchedBorder = BorderFactory.createEtchedBorder(BevelBorder.RAISED,
@@ -220,10 +219,7 @@ public class Chatoy {
             }
         });
 */
-        // 设置右边内容
-
-
-
+        // 设置右侧区域
 
         // 设置默认背景
         JPanel unchosenPanel = new JPanel();
@@ -233,14 +229,8 @@ public class Chatoy {
         JLabel unchosenLabel = new JLabel("Hi, Chatoy !", SwingConstants.CENTER);
         unchosenLabel.setForeground(Color.pink);
         unchosenLabel.setFont(unchosenFont);
-
         unchosenPanel.add(unchosenLabel, BorderLayout.CENTER);
-
-        //
-        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon(this.getClass().getResource(PathUtils.getRealPath("LoginBackground.png"))).getImage());
-        backgroundPanel.setLayout(new BorderLayout());
-        backgroundPanel.add(rightSplitPane, BorderLayout.CENTER);
-        rightSplitPane.setOpaque(false);
+        jSplitPane.setRightComponent(unchosenPanel);
 
         theFrame.setContentPane(jSplitPane);
         // setVisible
@@ -260,7 +250,7 @@ public class Chatoy {
         Room[] rooms = {new Room(1,"ROOM 1", "THIS IS A TEST", new Date())
                 , new Room(2,"ROOM 2", "THIS IS A TEST", new Date())
                 , new Room(3,"ROOM 3", "THIS IS A TEST", new Date())
-                , new Room(100,"ROOM 100 ------------------------------------------------", "THIS IS A TEST", new Date())};
+                , new Room(100,"ROOM 100 --------------------------------------------", "THIS IS A TEST", new Date())};
         return rooms;
     }
 
@@ -320,28 +310,22 @@ public class Chatoy {
     }
 
     public JPanel createRoomPanel(Room room) {
+        JPanel roomLayPanel = new JPanel();
+        roomLayPanel.setLayout(new BorderLayout());
         JPanel roomPanel = new JPanel();
         roomPanel.setBackground(Color.pink);
         roomPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.gray, Color.white));
         Box roomBox = Box.createVerticalBox();
 
         // 创建name和number区域
-        JLabel nameLabel = new JLabel(room.getName());
         // 自适应name大小来设置JTextArea高度
-        int nameTextAreaHeight = 0;
-        int nameTextAreaWidth = 110;
-        double nameDivide = nameLabel.getPreferredSize().getWidth() / nameTextAreaWidth;
-        for (int i = 0; i < nameDivide; i++) {
-            nameTextAreaHeight += (int) nameLabel.getPreferredSize().getHeight();
-        }
+        // AutoHeightTextArea nameTextArea = new AutoHeightTextArea(room.getName(), 110);
         JTextArea nameTextArea = new JTextArea();
-        // nameTextArea.setFont(roomFont);
-        nameTextArea.setPreferredSize(new Dimension(nameTextAreaWidth, nameTextAreaHeight));
-        nameTextArea.setLineWrap(true);
-        nameTextArea.setEditable(false);
-
-        nameTextArea.setOpaque(false);
+        // nameTextArea.setColumns(5);
         nameTextArea.setText(room.getName());
+        nameTextArea.setLineWrap(true); // 此方法如果设置column不超过9列 默认长度为101
+        nameTextArea.setEditable(false);
+        // nameTextArea.setOpaque(false);
         JLabel numberLabel = new JLabel("#" + room.getId());
         // 组装name和number
         JPanel numberPanel = new JPanel();
@@ -354,9 +338,12 @@ public class Chatoy {
         JPanel nameNumberPanel = new JPanel();
         nameNumberPanel.setLayout(new BorderLayout());
         nameNumberPanel.setOpaque(false);
+        JLabel nameLabel = new JLabel(room.getName()); // 参考用
+        nameLabel.setOpaque(true);
+
         nameNumberPanel.add(nameTextArea, BorderLayout.WEST);
         nameNumberPanel.add(numberPanel, BorderLayout.EAST);
-        nameNumberPanel.setPreferredSize(new Dimension(130, nameTextAreaHeight));
+        nameNumberPanel.setPreferredSize(new Dimension(130, (int)( (int)(nameLabel.getPreferredSize().getWidth() / nameTextArea.getPreferredSize().getWidth() + 1) * nameLabel.getPreferredSize().getHeight()) ));
 
         // 创建button区域
         JButton enterButton = new JButton("Enter");
@@ -376,6 +363,11 @@ public class Chatoy {
 
         roomPanel.add(roomBox);
 
+        roomLayPanel.add(new JPanel(), BorderLayout.WEST);
+        roomLayPanel.add(roomPanel, BorderLayout.CENTER);
+        roomLayPanel.add(new JPanel(), BorderLayout.EAST);
+
+
         // // roomBox添加到roomPanel, 并添加到leftBox
         // roomPanel.add(roomBox);
         // // roomPanel.setPreferredSize(new Dimension(160, 30+nameTextAreaHeight+(int)buttonPanel.getPreferredSize().getHeight()));
@@ -391,12 +383,12 @@ public class Chatoy {
             }
         });
 
-        return roomPanel;
+        return roomLayPanel;
     }
 
-    public JSplitPane showRight(Room room) {
-        JSplitPane rightSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        rightSplitPane.setDividerLocation(400);
+    public BackgroundPanel showRight(Room room) {
+        rightSplitPane.setOpaque(false);
+        rightSplitPane.setDividerLocation(490);
         rightSplitPane.setDividerSize(1);
 
         // 标题区
@@ -414,9 +406,10 @@ public class Chatoy {
         titelPanel.add(titelBox, BorderLayout.WEST);
 
         // 输入框区域
+        // textArea
         JTextArea textArea = new JTextArea();
-        textArea.setBackground(new Color(25, 25, 25));
-        textArea.setRows(5);
+        textArea.setOpaque(false);
+        textArea.setRows(1);
         textArea.setForeground(Color.white);
         textArea.setLineWrap(true);
         textArea.setText(room.getDescription());
@@ -425,22 +418,39 @@ public class Chatoy {
         JScrollPane textScrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         textScrollPane.getVerticalScrollBar().setUI(new DemoScrollBarUI());
         textScrollPane.setBorder(BorderFactory.createEmptyBorder());
+        textScrollPane.getViewport().setOpaque(false);
+        textScrollPane.setOpaque(false);
+        // button
         JButton sendButton = new JButton("发送");
-        JPanel sendButtonPanel = new JPanel();
-        sendButtonPanel.setBackground(new Color(25, 25, 25));
-        sendButtonPanel.setLayout(new BorderLayout());
-        sendButtonPanel.add(sendButton, BorderLayout.EAST);
+        // Box sendButtonVerticalBox = Box.createVerticalBox();
+        // Box sendButtonHorizontalBox = Box.createHorizontalBox();
+        // sendButtonHorizontalBox.add(sendButton);
+        // sendButtonHorizontalBox.add(Box.createHorizontalStrut(6));
+        // sendButtonVerticalBox.add(sendButtonHorizontalBox);
+        // sendButtonVerticalBox.add(Box.createVerticalStrut(10));
+        // JPanel sendButtonPanel = new JPanel();
+        // sendButtonPanel.setBackground(new Color(25, 25, 25));
+        // sendButtonPanel.setLayout(new BorderLayout());
+        // sendButtonPanel.add(sendButtonVerticalBox, BorderLayout.EAST);
         JPanel textButtonPanel = new JPanel();
         textButtonPanel.setLayout(new BorderLayout());
-        textButtonPanel.add(textScrollPane, BorderLayout.CENTER);
-        textButtonPanel.add(sendButtonPanel, BorderLayout.SOUTH);
+        textButtonPanel.setBackground(new Color(25, 25, 25));
+        JPanel littelPanel = new JPanel();
+        littelPanel.setOpaque(false);
+        littelPanel.setPreferredSize(new Dimension(4, 10));
+        textButtonPanel.add(littelPanel, BorderLayout.WEST);
+        textButtonPanel.add(textScrollPane, BorderLayout.CENTER);;
+        textButtonPanel.add(sendButton, BorderLayout.EAST);
 
 
         // 发送消息区域
+        Box messagesBox = Box.createVerticalBox();
         JPanel messagesPanel = new JPanel();
         messagesPanel.setOpaque(false);
-        messagesPanel.setLayout(new BorderLayout());
-        JScrollPane messagesScrollPane = new JScrollPane(messagesPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        messagesPanel.add(messagesBox);
+        JScrollPane messagesScrollPane = new JScrollPane(messagesPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        messagesScrollPane.getVerticalScrollBar().setUI(new DemoScrollBarUI());
+        messagesScrollPane.setBackground(Color.black);
         messagesScrollPane.setOpaque(false);
         messagesScrollPane.getViewport().setOpaque(false);
         sendButton.addActionListener(new ActionListener() {
@@ -448,36 +458,70 @@ public class Chatoy {
             public void actionPerformed(ActionEvent e) {
                 // 设置message区域组件
                 JPanel messagePanel = new JPanel();
-                Box messageContentBox = Box.createHorizontalBox();
+                JPanel messageLongPanel = new JPanel();
+                Box messageBox = Box.createHorizontalBox();
                 JTextArea messageTextArea = new JTextArea();
-                // 获取输入的text内容
+                // 设置文本展示区
                 String messageContent = textArea.getText();
+                JLabel messageLabel = new JLabel(messageContent); // 一行的时候用
+                messageLabel.setOpaque(true);
+                messageLabel.setBackground(Color.pink);
+                double messageTextAreaWidth = 300;
+                double messageDivide = messageLabel.getPreferredSize().getWidth() / messageTextAreaWidth;
                 messageTextArea.setText(messageContent);
+                // messageTextArea.setFont(roomFont);
+                messageTextArea.setBackground(Color.pink);
+                messageTextArea.setLineWrap(true);
+                messageTextArea.setEditable(false);
+                messageLongPanel.setOpaque(false);
+                messageLongPanel.setLayout(new BorderLayout());
+                messageLongPanel.setPreferredSize(new Dimension(WIDTH-dividerLocation, (int)(((int)messageDivide+1)*messageLabel.getPreferredSize().getHeight()) ));
                 // 组装一条messagePanel
-                messageContentBox.add(messageTextArea);
-                messageContentBox.add(Box.createHorizontalStrut(10));
-                messagePanel.setLayout(new BorderLayout());
-                messagePanel.add(messageContentBox, BorderLayout.EAST);
+                if (messageDivide <= 1) {
+                    // messagePanel.setPreferredSize(messageLabel.getPreferredSize().getWidth());
+                    messageLongPanel.add(messageLabel, BorderLayout.WEST);
+                    // messageBox.add(messageLabel);
+                    // messageBox.add(Box.createHorizontalStrut(1000));
+                } else {
+                    messageLongPanel.add(messageTextArea, BorderLayout.WEST);
+
+                    // messageBox.add(Box.createHorizontalStrut((int) ((WIDTH-dividerLocation) - messageTextAreaWidth)));
+                    // messageBox.add(messageTextArea);
+                }
+                // messagePanel
+                // messagePanel.setLayout(new BorderLayout());
+                // messagePanel.add(messageBox, BorderLayout.EAST);
+
+                // messagePanel.setPreferredSize(new Dimension((int)messageTextAreaWidth, (int)(messageDivide * messageLabel.getPreferredSize().getHeight())));
+
                 // 组装messagesPanel
-                messagesPanel.add(messagePanel, BorderLayout.PAGE_END);
-                messagesScrollPane.updateUI();
-
-
+                messagesBox.add(messageLongPanel);
+                messagesBox.add(Box.createVerticalStrut(10));
+                messagesPanel.updateUI();
             }
         });
 
         // 组装
 
-        // 组装分割线上侧
-        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon(this.getClass().getResource(PathUtils.getRealPath("LoginBackground.png"))).getImage());
-        backgroundPanel.setLayout(new BorderLayout());
-        backgroundPanel.add(titelPanel, BorderLayout.NORTH);
-        backgroundPanel.add(messagesScrollPane, BorderLayout.CENTER);
+        // 设置分割面板上侧
+        JPanel upperPanel = new JPanel();
+        upperPanel.setOpaque(false);
+        upperPanel.setLayout(new BorderLayout());
+        upperPanel.add(titelPanel, BorderLayout.NORTH);
+        upperPanel.add(messagesScrollPane, BorderLayout.CENTER);
 
-        rightSplitPane.setTopComponent(backgroundPanel);
+        // 组装整体
+        rightSplitPane.setTopComponent(upperPanel);
         rightSplitPane.setBottomComponent(textButtonPanel);
 
-        return rightSplitPane;
+        // 设置背景
+        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon(this.getClass().getResource(PathUtils.getRealPath("LoginBackground.png"))).getImage());
+        backgroundPanel.setLayout(new BorderLayout());
+        backgroundPanel.add(rightSplitPane, BorderLayout.CENTER);
+
+
+
+        return backgroundPanel;
     }
 
 
