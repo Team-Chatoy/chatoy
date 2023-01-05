@@ -1,19 +1,22 @@
 package component.mainframeleft;
 
 import chatoy.Chatoy;
+import democlass.database.Room;
 import utils.ScreenUtils;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 public class JoinRoomPanel {
 
-    final int WIDTH = 390;
-    final int HEIGHT = 100;
+    final int WIDTH = 395;
+    final int HEIGHT = 110;
 
     Font font1 = new Font("微软雅黑",Font.PLAIN,12);
     Font font2 = new Font("微软雅黑",Font.PLAIN,20);
@@ -22,7 +25,26 @@ public class JoinRoomPanel {
 
     JFrame theFrame = new JFrame();
 
+    public static Room createdRoom;
     public void init() {
+        /*     try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (InstantiationException ex) {
+            ex.printStackTrace();
+        } catch (IllegalAccessException ex) {
+            ex.printStackTrace();
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+        //改变风格*/
+
 
         theFrame.setBounds((ScreenUtils.getScreenWidth()-WIDTH)/2, (ScreenUtils.getScreenHeight()-WIDTH)/2, WIDTH, HEIGHT);
         //theFrame.setResizable(false);
@@ -83,7 +105,7 @@ public class JoinRoomPanel {
         searchRoomPanel.setDividerLocation(65);
         searchRoomPanel.setDividerSize(0);
         searchedRoomPanel.setVisible(false);
-        searchRoomPanel.setBounds(0,0, 380, 65);
+        searchRoomPanel.setBounds(0,0, 380, 75);
         searchRoomPanel.setBackground(new Color(38, 45 ,49));
 
 
@@ -105,18 +127,75 @@ public class JoinRoomPanel {
                     if(roomNumber.equals(roomID)) {
                         searchRoomPanel.setSize(380,170);
                         backgroundPanel.setSize(WIDTH,200);
-                        theFrame.setSize(WIDTH,200);
+                        theFrame.setSize(WIDTH,207);
                         searchedRoomPanel.setVisible(true);
                         //searchedRoomPanel.add(new RoomPanel(LeftBox.getRoomList().get(i),LeftBox.getRoomsBox()));
+
+                        JPanel roomPanel = new JPanel();
+                        roomPanel.setBackground(new Color(38, 45 ,49));
+                        roomPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.gray, Color.white));
+                        Box roomBox = Box.createVerticalBox();
+                        roomPanel.setSize(370,160);
+
+                        // 创建name和number区域
+                        JLabel nameLabel = new JLabel(Chatoy.rooms.get(i).getName());
+                        // 自适应name大小来设置JTextArea高度
+                        int nameTextAreaHeight = 0;
+                        int nameTextAreaWidth = 110;
+                        double nameDivide = nameLabel.getPreferredSize().getWidth() / nameTextAreaWidth;
+                        for (int j = 0; j < nameDivide; j++) {
+                            nameTextAreaHeight += (int) nameLabel.getPreferredSize().getHeight();
+                        }
+                        JTextArea nameTextArea = new JTextArea();
+                        // nameTextArea.setFont(roomFont);
+                        nameTextArea.setPreferredSize(new Dimension(nameTextAreaWidth, nameTextAreaHeight));
+                        nameTextArea.setLineWrap(true);
+                        nameTextArea.setEditable(false);
+                        nameTextArea.setOpaque(false);
+                        nameTextArea.setText(Chatoy.rooms.get(i).getName());
+                        nameTextArea.setForeground(Color.pink);
+                        JLabel numberLabel = new JLabel("#" + Chatoy.rooms.get(i).getId());
+                        // 组装name和number
+                        JPanel numberPanel = new JPanel();
+                        // numberLabel.setFont(roomFont);
+                        numberLabel.setOpaque(true);
+                        numberLabel.setBackground(Color.LIGHT_GRAY);
+                        numberPanel.setLayout(new GridBagLayout());
+                        numberPanel.setOpaque(false);
+                        numberPanel.add(numberLabel);
+                        JPanel nameNumberPanel = new JPanel();
+                        nameNumberPanel.setLayout(new BorderLayout());
+                        nameNumberPanel.setOpaque(false);
+                        nameNumberPanel.add(nameTextArea, BorderLayout.WEST);
+                        nameNumberPanel.add(numberPanel, BorderLayout.EAST);
+                        nameNumberPanel.setPreferredSize(new Dimension(130, nameTextAreaHeight));
+
+                        // 创建button区域
+                        JButton enterButton = new JButton("Enter");
+                        // enterButton.setFont(roomFont);
+                        enterButton.setForeground(Color.pink);
+                        enterButton.setBorder(BorderFactory.createLineBorder(Color.gray));
+                        enterButton.setBackground(new Color(38, 45 ,49));
+                        enterButton.setPreferredSize(new Dimension(150, 20));
+                        JPanel buttonPanel = new JPanel();
+                        buttonPanel.add(enterButton);
+                        buttonPanel.setOpaque(false);
+
+                        // 组装roomBox
+                        roomBox.add(Box.createVerticalStrut(4));
+                        roomBox.add(nameNumberPanel);
+                        roomBox.add(Box.createVerticalStrut(5));
+                        roomBox.add(buttonPanel);
+                        roomBox.add(Box.createHorizontalStrut(10));
+
+                        roomPanel.add(roomBox);
+
+                        createdRoom = new Room(Chatoy.rooms.get(i).getId(),Chatoy.rooms.get(i).getName(),null,new Date());
+                        JPanel createdRoomPanel = Chatoy.createRoomPanel(createdRoom);
+                        searchedRoomPanel.add(createdRoomPanel);
+                        Border lineBorder = BorderFactory.createLineBorder(Color.gray);
+
                     }
-                }
-                // 查找失败显示搜索失败提示
-                if(Integer.parseInt(roomID) > Chatoy.rooms.size()){
-                    searchedRoomPanel.add(failSearchLabel,BorderLayout.CENTER);
-                    searchRoomPanel.setSize(380,170);
-                    backgroundPanel.setSize(WIDTH,200);
-                    theFrame.setSize(WIDTH,200);
-                    searchedRoomPanel.setVisible(true);
                 }
 
 
@@ -124,8 +203,11 @@ public class JoinRoomPanel {
         });
 
         theFrame.add(backgroundPanel);
+
+        /*        theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
         theFrame.setVisible(true);
     }
 }
+
 
 
