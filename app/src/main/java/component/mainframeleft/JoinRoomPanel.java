@@ -203,6 +203,7 @@ public class JoinRoomPanel {
         });
 
         theFrame.add(backgroundPanel);
+
 /*        theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
         theFrame.setVisible(true);
     }
