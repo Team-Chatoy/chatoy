@@ -100,8 +100,8 @@ public class JoinRoomPanel {
                 String roomID = roomSearchTextField.getText();
                 String roomNumber;
                 // 查找成功显示找的的房间
-                for(int i = 0; i < Chatoy.loadRooms().size(); i++){
-                    roomNumber = Integer.toString(Chatoy.loadRooms().get(i).getId());
+                for(int i = 0; i < Chatoy.rooms.size(); i++){
+                    roomNumber = Integer.toString(Chatoy.rooms.get(i).getId());
                     if(roomNumber.equals(roomID)) {
                         searchRoomPanel.setSize(380,170);
                         backgroundPanel.setSize(WIDTH,200);
@@ -111,7 +111,7 @@ public class JoinRoomPanel {
                     }
                 }
                 // 查找失败显示搜索失败提示
-                if(Integer.parseInt(roomID) > Chatoy.loadRooms().size()){
+                if(Integer.parseInt(roomID) > Chatoy.rooms.size()){
                     searchedRoomPanel.add(failSearchLabel,BorderLayout.CENTER);
                     searchRoomPanel.setSize(380,170);
                     backgroundPanel.setSize(WIDTH,200);
