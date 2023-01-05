@@ -81,7 +81,7 @@ public class App {
         httpTextField.setText("请输入网址");
         httpTextField.setForeground(Color.gray); // 文本框字体设为浅灰色
         httpTextField.setOpaque(false); // 文本框设置为透明
-        httpTextField.setBorder(etchedBorder); // 粉色边框
+        httpTextField.setBorder(lineBorder); // 粉色边框
 
         httpBox.add(httpLabel);
         httpBox.add(Box.createHorizontalStrut(6));

@@ -2,6 +2,8 @@ package chatoy;
 
 import component.allframe.BackgroundPanel;
 import component.allframe.DemoScrollBarUI;
+import component.mainframeleft.CreateRoomPanel;
+import component.mainframeleft.JoinRoomPanel;
 import democlass.database.Room;
 import utils.PathUtils;
 import utils.ScreenUtils;
@@ -20,22 +22,23 @@ import java.util.*;
 public class Chatoy {
     JFrame theFrame = new JFrame("chatoy");
 
-    final int WIDTH = 820;
+    static final int WIDTH = 820;
     final int HEIGHT = 560;
-    int dividerLocation = 200;
+    static int dividerLocation = 200;
     Font font;
     Font unchosenFont = new Font("Cabin Sketch",Font.ITALIC,70);
-    JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-    JSplitPane rightSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    static JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+    static JSplitPane rightSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
-    Room[] rooms;
+    public static ArrayList<Room> rooms;
 
     JTextArea roomDescription = new JTextArea();
 
     Box roomBox = Box.createVerticalBox();
-
+    static Box roomsBox;
+    static JPanel roomsPanel;
     Border bevelBorder = BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.black,
-             Color.black, Color.white, Color.pink);
+            Color.black, Color.white, Color.pink);
     Border etchedBorder = BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.white, Color.pink);
     public void init() throws IOException {
 
@@ -54,7 +57,7 @@ public class Chatoy {
 
         // 给窗口设置属性
         theFrame.setBounds((ScreenUtils.getScreenWidth()-WIDTH)/2, (ScreenUtils.getScreenHeight()-HEIGHT)/2, WIDTH, HEIGHT);
-        // theFrame.setResizable(false);
+        theFrame.setResizable(false);
         theFrame.setIconImage(new ImageIcon(this.getClass().getResource(PathUtils.getRealPath("logo.png"))).getImage());
 
         // 设置菜单栏
@@ -122,22 +125,36 @@ public class Chatoy {
         // 设置查找和添加键
         JTextField roomSearchTextField = new JTextField("搜索");
         roomSearchTextField.setForeground(Color.gray);
-        JButton roomAddButton = new JButton("+");
-        roomAddButton.setPreferredSize(new Dimension(40, 30));
-        roomAddButton.setBackground(Color.pink);
+        JMenu roomFunctionMenu = new JMenu("   +");
+        roomFunctionMenu.setForeground(Color.pink);
+        roomFunctionMenu.setBackground(new Color(38, 45 ,49));
+        roomFunctionMenu.setHorizontalAlignment(SwingConstants.CENTER);
+        roomFunctionMenu.setPreferredSize(new Dimension(40, 30));
+        JMenuItem joinRoomItem,createRoomItem;
+        joinRoomItem = new JMenuItem("加入房间");
+        createRoomItem = new JMenuItem("创建房间");
+        joinRoomItem.setForeground(Color.pink);
+        createRoomItem.setForeground(Color.pink);
+        joinRoomItem.setBackground(new Color(38, 45 ,49));
+        createRoomItem.setBackground(new Color(38, 45 ,49));
+        roomFunctionMenu.add(joinRoomItem);
+        roomFunctionMenu.add(createRoomItem);
+        JMenuBar functionMenuBar = new JMenuBar();
+        functionMenuBar.add(roomFunctionMenu);
+        functionMenuBar.setBackground(new Color(38, 45 ,49));
         // 组装查找和添加键区域
         roomSearchAddPanel.add(roomSearchTextField, BorderLayout.CENTER);
-        roomSearchAddPanel.add(roomAddButton, BorderLayout.EAST);
+        roomSearchAddPanel.add(functionMenuBar, BorderLayout.EAST);
 
         // 设置rooms区域
-        JPanel roomsPanel = new JPanel();
+        roomsPanel = new JPanel();
         roomsPanel.setBackground(new Color(19, 28, 33));
-        Box roomsBox = Box.createVerticalBox();
+        roomsBox = Box.createVerticalBox();
         // 创建所有的图形化room
         rooms = loadRooms();
-        for (int i=0; i < rooms.length; i++) {
+        for (int i=0; i < rooms.size(); i++) {
             // roomPanel
-            JPanel roomPanel = createRoomPanel(rooms[i]);
+            JPanel roomPanel = createRoomPanel(rooms.get(i));
             roomsBox.add(roomPanel);
             roomsBox.add(Box.createVerticalStrut(10));
         }
@@ -160,12 +177,21 @@ public class Chatoy {
         jSplitPane.setLeftComponent(leftBox);
 
         // 组装后开始设置左侧区域的Actionlistener等
-        roomAddButton.addActionListener(new ActionListener() {
+        joinRoomItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                roomsBox.add(createRoomPanel(new Room(111, "ADD 1", "THIS IS A ADDING TEST", new Date())));
-                roomsBox.add(Box.createVerticalStrut(10));
-                roomsPanel.updateUI();
+                new JoinRoomPanel().init();
+
+            }
+        });
+        // 创建房间响应
+        createRoomItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 弹出一个对话框，让用户输入图书的信息
+
+                new CreateRoomPanel().init();
+
             }
         });
 
@@ -246,12 +272,20 @@ public class Chatoy {
     }
 
     // 向服务器请求room
-    public Room[] loadRooms() {
-        Room[] rooms = {new Room(1,"ROOM 1", "THIS IS A TEST", new Date())
-                , new Room(2,"ROOM 2", "THIS IS A TEST", new Date())
-                , new Room(3,"ROOM 3", "THIS IS A TEST", new Date())
-                , new Room(100,"ROOM 100 --------------------------------------------", "THIS IS A TEST", new Date())};
+    public static ArrayList<Room> loadRooms() {
+        ArrayList<Room> rooms = new ArrayList<Room>();
+        rooms.add(new Room(1,"ROOM 1", "THIS IS A TEST", new Date()));
+        rooms.add(new Room(2,"ROOM 2", "THIS IS A TEST", new Date()));
+        rooms.add(new Room(3,"ROOM 3", "THIS IS A TEST", new Date()));
         return rooms;
+    }
+
+    public static Box loadRoomsBox() {
+        return roomsBox;
+    }
+
+    public static JPanel loadRoomsPanel() {
+        return roomsPanel;
     }
 
     public static void InitGlobalFont(Font fnt)
@@ -309,23 +343,28 @@ public class Chatoy {
         }
     }
 
-    public JPanel createRoomPanel(Room room) {
-        JPanel roomLayPanel = new JPanel();
-        roomLayPanel.setLayout(new BorderLayout());
+    public static JPanel createRoomPanel(Room room) {
         JPanel roomPanel = new JPanel();
-        roomPanel.setBackground(Color.pink);
+        roomPanel.setBackground(new Color(38,45,49));
         roomPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.gray, Color.white));
         Box roomBox = Box.createVerticalBox();
-
         // 创建name和number区域
+        JLabel nameLabel = new JLabel(room.getName());
         // 自适应name大小来设置JTextArea高度
-        // AutoHeightTextArea nameTextArea = new AutoHeightTextArea(room.getName(), 110);
+        int nameTextAreaHeight = 0;
+        int nameTextAreaWidth = 110;
+        double nameDivide = nameLabel.getPreferredSize().getWidth() / nameTextAreaWidth;
+        for (int i = 0; i < nameDivide; i++) {
+            nameTextAreaHeight += (int) nameLabel.getPreferredSize().getHeight();
+        }
         JTextArea nameTextArea = new JTextArea();
-        // nameTextArea.setColumns(5);
-        nameTextArea.setText(room.getName());
-        nameTextArea.setLineWrap(true); // 此方法如果设置column不超过9列 默认长度为101
+        // nameTextArea.setFont(roomFont);
+        nameTextArea.setForeground(Color.pink);
+        nameTextArea.setPreferredSize(new Dimension(nameTextAreaWidth, nameTextAreaHeight));
+        nameTextArea.setLineWrap(true);
         nameTextArea.setEditable(false);
-        // nameTextArea.setOpaque(false);
+        nameTextArea.setOpaque(false);
+        nameTextArea.setText(room.getName());
         JLabel numberLabel = new JLabel("#" + room.getId());
         // 组装name和number
         JPanel numberPanel = new JPanel();
@@ -338,43 +377,30 @@ public class Chatoy {
         JPanel nameNumberPanel = new JPanel();
         nameNumberPanel.setLayout(new BorderLayout());
         nameNumberPanel.setOpaque(false);
-        JLabel nameLabel = new JLabel(room.getName()); // 参考用
-        nameLabel.setOpaque(true);
-
         nameNumberPanel.add(nameTextArea, BorderLayout.WEST);
         nameNumberPanel.add(numberPanel, BorderLayout.EAST);
-        nameNumberPanel.setPreferredSize(new Dimension(130, (int)( (int)(nameLabel.getPreferredSize().getWidth() / nameTextArea.getPreferredSize().getWidth() + 1) * nameLabel.getPreferredSize().getHeight()) ));
-
+        nameNumberPanel.setPreferredSize(new Dimension(130, nameTextAreaHeight));
         // 创建button区域
         JButton enterButton = new JButton("Enter");
         // enterButton.setFont(roomFont);
+        enterButton.setForeground(Color.pink);
         enterButton.setBorder(BorderFactory.createLineBorder(Color.gray));
-        enterButton.setBackground(Color.pink);
+        enterButton.setBackground(new Color(38,45,49));
         enterButton.setPreferredSize(new Dimension(150, 20));
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(enterButton);
         buttonPanel.setOpaque(false);
-
         // 组装roomBox
         roomBox.add(Box.createVerticalStrut(4));
         roomBox.add(nameNumberPanel);
         roomBox.add(Box.createVerticalStrut(5));
         roomBox.add(buttonPanel);
-
         roomPanel.add(roomBox);
-
-        roomLayPanel.add(new JPanel(), BorderLayout.WEST);
-        roomLayPanel.add(roomPanel, BorderLayout.CENTER);
-        roomLayPanel.add(new JPanel(), BorderLayout.EAST);
-
-
         // // roomBox添加到roomPanel, 并添加到leftBox
         // roomPanel.add(roomBox);
         // // roomPanel.setPreferredSize(new Dimension(160, 30+nameTextAreaHeight+(int)buttonPanel.getPreferredSize().getHeight()));
         // roomsBox.add(roomPanel);
         // roomsBox.add(Box.createVerticalStrut(10));
-
-
         enterButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -382,11 +408,10 @@ public class Chatoy {
                 jSplitPane.setDividerLocation(dividerLocation);
             }
         });
-
-        return roomLayPanel;
+        return roomPanel;
     }
 
-    public BackgroundPanel showRight(Room room) {
+    public static BackgroundPanel showRight(Room room) {
         rightSplitPane.setOpaque(false);
         rightSplitPane.setDividerLocation(490);
         rightSplitPane.setDividerSize(1);
@@ -515,7 +540,8 @@ public class Chatoy {
         rightSplitPane.setBottomComponent(textButtonPanel);
 
         // 设置背景
-        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon(this.getClass().getResource(PathUtils.getRealPath("LoginBackground.png"))).getImage());
+        Chatoy chatoy = new Chatoy();
+        BackgroundPanel backgroundPanel = new BackgroundPanel(new ImageIcon(chatoy.getClass().getResource(PathUtils.getRealPath("LoginBackground.png"))).getImage());
         backgroundPanel.setLayout(new BorderLayout());
         backgroundPanel.add(rightSplitPane, BorderLayout.CENTER);
 
