@@ -284,12 +284,10 @@ public class Chatoy {
 
   public static JPanel createRoomPanel(Room room) {
     JPanel roomPanel = new JPanel();
-    roomPanel.setBackground(new Color(38, 45, 49));
+    roomPanel.setBackground(new Color(23, 28, 30));
     roomPanel.setBorder(
-      BorderFactory.createEtchedBorder(
-        EtchedBorder.RAISED,
-        Color.gray,
-        Color.white
+      BorderFactory.createLineBorder(
+              Color.lightGray
       )
     );
     Box roomBox = Box.createVerticalBox();
@@ -315,6 +313,7 @@ public class Chatoy {
     // numberLabel.setFont(roomFont);
     numberLabel.setOpaque(true);
     numberLabel.setBackground(Color.LIGHT_GRAY);
+    numberLabel.setFont(new Font("微软雅黑", Font.PLAIN, 10));
     numberPanel.setLayout(new GridBagLayout());
     numberPanel.setOpaque(false);
     numberPanel.add(numberLabel);
@@ -327,8 +326,8 @@ public class Chatoy {
     // 创建 button 区域
     JButton enterButton = new JButton("Enter");
     enterButton.setForeground(Color.pink);
-    enterButton.setBorder(BorderFactory.createLineBorder(Color.gray));
-    enterButton.setBackground(new Color(38, 45, 49));
+    enterButton.setBorder(null);
+    enterButton.setBackground(new Color(45, 50, 52));
     enterButton.setPreferredSize(new Dimension(150, 20));
     JPanel buttonPanel = new JPanel();
     buttonPanel.add(enterButton);
