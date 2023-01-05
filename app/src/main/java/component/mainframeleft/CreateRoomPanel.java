@@ -155,6 +155,7 @@ public class CreateRoomPanel {
                 Chatoy.loadRoomsBox().add(createdRoomPanel);
                 Chatoy.loadRoomsBox().add(Box.createVerticalStrut(10));
                 Chatoy.rooms.add(createdRoom);
+                // 刷新roomsPanel界面
                 Chatoy.loadRoomsPanel().updateUI();
 
                 roomID++;
